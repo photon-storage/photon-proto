@@ -119,7 +119,7 @@ generate_pb() {
 
 # generating pbs for different package
 PKG=ext generate_pb
-#PKG=testing generate_pb
+PKG=util generate_pb
 PKG=consensus generate_pb
 PKG=consensus/validator-client generate_pb
 PKG=depot generate_pb

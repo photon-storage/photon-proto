@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package testing;
 
-option go_package = "github.com/photon-storage/photon-proto/testing;pbt";
+option go_package = "github.com/photon-storage/photon-proto/util;pbt";
 
 import "google/protobuf/descriptor.proto";
 import "google/protobuf/timestamp.proto";
