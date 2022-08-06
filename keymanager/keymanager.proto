@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package photon.keymanager;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "photon.proto.keymanager";
+option go_package = "github.com/photon-storage/photon-proto/keymanager;pbk";
+option java_multiple_files = true;
+option java_outer_classname = "KeymanagerProto";
+option java_package = "storage.photon.proto.keymanager";
+option php_namespace = "photon\\proto\\keymanager";
+
+
+// KeyManager service API.
+//
+// Defines a remote-signing keymanager which manages secret keys
+// and signs messages.
+service KeyManager {
+    // Fetch public keys managed by server.
+    rpc ListPublicKeys(google.protobuf.Empty) returns (ListPublicKeysResponse) {
+        option (google.api.http) = {
+            get: "/accounts/v2/remote/accounts"
+        };
+    }
+
+    // Sign a request via gRPC.
+    rpc Sign(SignRequest) returns (SignResponse) {
+        option (google.api.http) = {
+            post: "/accounts/v2/remote/sign"
+        };
+    }
+}
+
+// ListPublicKeysResponse contains public keys for the secrets managed
+// by the remote key manager server.
+message ListPublicKeysResponse {
+    // List of 48-byte, BLS12-381 public keys.
+    repeated bytes public_keys = 2;
+}
+
+// SignRequest is a message type that requests for signing of the given hash.
+message SignRequest {
+    // 48-byte public key corresponding to an associated secret key
+    // being requested to sign data.
+    bytes public_key = 1;
+
+    // 32-byte hash of raw data the client is requesting to sign.
+    bytes hash = 2;
+}
+
+// SignResponse returned by a KeyManager gRPC service.
+message SignResponse {
+    enum Status {
+        UNKNOWN = 0;
+        SUCCEEDED = 1;
+        DENIED = 2;
+        FAILED = 3;
+    }
+
+    // BLS12-381 signature for the hash specified in the request.
+    bytes signature = 1;
+
+    // Status of the signing response, standardized as an enum
+    // to ensure different remote signing servers follow the
+    // same conventions.
+    Status status = 2;
+}

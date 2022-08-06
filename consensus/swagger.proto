@@ -1,0 +1,35 @@
+// This is an optional proto that provides some gRPC gateway metadata for
+// generating the OpenAPIv2(swagger) header.
+syntax = "proto3";
+
+package photon.consensus;
+
+// import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+
+
+/*option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+    info: {
+        title: "Ethereum Serenity APIs";
+        version: "v1alpha1";
+        license: {
+            name: "Licenced under Apache 2.0";
+            url: "http://www.apache.org/licenses/LICENSE-2.0";
+        };
+        description: "{{ index . "description" }}";
+    };
+    external_docs: {
+        url: "https://github.com/ethereum/consensus-specs";
+        description: "Ethereum Consensus Specification on Github";
+    };
+    host: "api.prylabs.net",
+    schemes: HTTPS;
+    schemes: WSS;
+    consumes: "application/json";
+    consumes: "application/grpc-web-text";
+    consumes: "application/grpc-web-json";
+    produces: "application/json";
+    produces: "application/grpc-web-text";
+    produces: "application/grpc-web-json";
+};*/

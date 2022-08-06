@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "google/protobuf/descriptor.proto";
+
+import "ext/options.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "P2PMessagesProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+
+message Status {
+  bytes finalized_root = 1 [(photon.ext.ssz_size) = "32"];
+  uint64 finalized_epoch = 2 [(photon.ext.cast_type) = "Epoch"];
+  bytes head_root = 3 [(photon.ext.ssz_size) = "32"];
+  uint64 head_slot = 4 [(photon.ext.cast_type) = "Slot"];
+}
+
+message BlocksByRangeRequest {
+  uint64 start_slot = 1 [(photon.ext.cast_type) = "Slot"];
+  uint64 count = 2;
+  uint64 step = 3;
+}
+
+message Metadata {
+  uint64 seq_number = 1;
+  bytes attnets = 2 [(photon.ext.ssz_size) = "8", (photon.ext.cast_type) = "github.com/prysmaticlabs/go-bitfield.Bitvector64"];
+  bytes syncnets = 3 [(photon.ext.ssz_size) = "1", (photon.ext.cast_type) = "github.com/prysmaticlabs/go-bitfield.Bitvector4"];
+}
+
+message Message {
+  bytes msg = 1;
+}
+
+message BlocksByRootsRequest {
+  repeated bytes roots = 1;
+}
+
+message Uint64 {
+  uint64 v = 1;
+}

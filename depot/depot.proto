@@ -1,0 +1,171 @@
+syntax = "proto3";
+
+package photon.depot;
+
+import "google/api/annotations.proto";
+
+import "consensus/transaction.proto";
+import "depot/object.proto";
+
+option csharp_namespace = "photon.proto.depot";
+option go_package = "github.com/photon-storage/photon-proto/depot;pbd";
+option java_multiple_files = true;
+option java_outer_classname = "DepotProto";
+option java_package = "storage.photon.proto.depot";
+option php_namespace = "photon\\proto\\depot";
+
+
+// Depot service API
+//
+// Depot service provides an interface for storing and retrieving data objects.
+service Depot {
+    // Inquires for object status.
+    //
+    // The API is used for client to synchronize with Depot on the latest
+    // object status. It can be used to synchronize progress when resuming
+    // from a previous client/server failure.
+    rpc ObjectStatus(ObjectStatusRequest) returns (ObjectStatusResponse) {
+        option (google.api.http) = {
+            get : "/photon/depot/object_status",
+        };
+    }
+
+    // Initiate an object update.
+    //
+    // The request includes a signed transaction needs to be broadcasted by
+    // the Depot upon successful data upload. The signed transaction contains
+    // object storage requirement and fees proposed by the client. If the Depot
+    // is willing to take the storage contract proposal, an ACCEPTED status is
+    // returned and the client can proceed to update data chunks. Otherwise,
+    // a REJECTED status is returned.
+    rpc UploadInit(UploadInitRequest) returns (UploadInitResponse) {
+        option (google.api.http) = {
+            post : "/photon/depot/update_init",
+            body : "*"
+        };
+    }
+
+    // Upload a data chunk for a previously initiated object upload.
+    //
+    // Besides the chunk data, the request also contains object hash, merkle
+    // tree proof for verification purpose. Upon chunk acceptence, an ACCEPTED
+    // status is returned.
+    rpc UploadChunk(UploadChunkRequest) returns (UploadChunkResponse) {
+        option (google.api.http) = {
+            get : "/photon/depot/upload_chunk",
+        };
+    }
+
+    // Download a data chunk from a previously uploaded object.
+    rpc DownloadChunk(DownloadChunkRequest) returns (DownloadChunkResponse) {
+        option (google.api.http) = {
+            get : "/photon/depot/download_chunk",
+        };
+    }
+}
+
+enum ObjectStatus {
+    UPLOAD_STATUS_INVALID = 0;
+    // Object not found by the Depot.
+    NOT_FOUND = 1;
+    // Object is still being uploaded.
+    WRITABLE = 2;
+    // Object is received and can be retrieved.
+    READABLE = 3;
+}
+
+message ObjectStatusRequest {
+    // The Merkle tree root hash of the original data.
+    bytes hash = 1;
+    // The original object commit tx hash.
+    // If empty, all object versions are inquiried.
+    bytes commit_tx_hash = 2;
+}
+
+// BitSet presents a bit vector.
+message BitSet {
+    // Number of valid bits in the byte array.
+    uint32 len = 1;
+    // Bitvector byte array.
+    repeated uint64 vec = 2;
+}
+
+message ObjectStatusResponse {
+    // Object status.
+    ObjectStatus status = 1;
+    // Object's owner's publick key.
+    bytes owner = 2;
+    // The original object commit tx hash.
+    bytes commit_tx_hash = 3;
+    // The Merkle tree root hash of the original data.
+    bytes hash = 4;
+    // Encoded object data hash.
+    bytes encoded_hash = 5;
+    // Original data size.
+    uint64 size = 6;
+    // Encoded data size.
+    uint64 encoded_size = 7;
+    // Total number of blocks for the object.
+    uint32 num_blocks = 8;
+    // Number of sectors per block.
+    uint32 sectors_per_block = 9;
+    // Number of sectors per block.
+    uint32 blocks_per_chunk = 10;
+    // Total number of chunks for the objet.
+    uint32 num_chunks = 11;
+    // BitSet of chunks indicates availability in the Depot.
+    // Only valid for an active upload.
+    BitSet received = 12;
+}
+
+message UploadInitRequest {
+    // Proposed OBJECT_COMMIT transaction which contains storage contract
+    // details.
+    photon.consensus.SignedTransaction signed_tx = 1;
+    // Tx signature signed by the TxDataObjectCommit.owner or TxDataObjectAudit.auditor.
+    bytes initiator_signature = 2;
+    // Tx signature signed by the Transaction.from.
+    bytes from_signature = 3;
+    // Total number of blocks for this upload. It can derive number of chunks,
+    // which determine the way merkle root hash of the objec is calculated.
+    // The root hash is recorded in the above transaction.
+    uint32 num_blocks = 4;
+    // Fixed number of sectors for each block.
+    uint32 sectors_per_block = 5;
+    // Fixed number of blocks for each chunk.
+    uint32 blocks_per_chunk = 6;
+}
+
+message UploadInitResponse {
+    // Fixed number of sectors for each block.
+    uint32 sectors_per_block = 1;
+    // Fixed number of blocks for each uploaded chunk, except the last chunk
+    // can have a smaller number.
+    uint32 blocks_per_chunk = 2;
+}
+
+message UploadChunkRequest{
+    // Chunk data.
+    photon.depot.Chunk chunk = 1;
+}
+
+message UploadChunkResponse {
+    // Number of chunks received and stored.
+    uint32 received_chunks = 1;
+    // If not empty, returns the tx hash just submitted on chain.
+    bytes tx_hash = 2;
+}
+
+message DownloadChunkRequest{
+    // The Merkle tree root hash of the original data.
+    bytes hash = 1;
+    // Original object commit tx hash.
+    bytes commit_tx_hash = 2;
+    // Chunk Index.
+    uint32 index = 3;
+}
+
+message DownloadChunkResponse{
+    // Chunk data.
+    photon.depot.Chunk chunk = 1;
+}

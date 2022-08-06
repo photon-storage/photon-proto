@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "ext/options.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "SignProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+
+message SigningData {
+  // The hash of the object being signed.
+  bytes hash = 1 [(photon.ext.ssz_size) = "32"];
+  // The domain for the particular object being signed.
+  bytes domain = 2 [(photon.ext.ssz_size) = "32"];
+}

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package photon.depot;
+
+import "google/api/annotations.proto";
+
+option csharp_namespace = "photon.proto.depot";
+option go_package = "github.com/photon-storage/photon-proto/depot;pbd";
+option java_multiple_files = true;
+option java_outer_classname = "ObjectProto";
+option java_package = "storage.photon.proto.depot";
+option php_namespace = "photon\\proto\\depot";
+
+// Block is the unit for storage and proof of retrievability verification.
+message Block {
+    // Global block index in object scope.
+    uint32 index = 1;
+    // For the initial updater, the block data contains client's original
+    // data intended for storage. After a successful auditing event, data
+    // becomes "transcoded", which requires a decoding before usage. (e.g.
+    // Merkle root hash calculation).
+    bytes data = 2;
+    // Por signature for block.
+    bytes signature = 3;
+}
+
+// Chunk is a group of consecutive blocks that represent a slice of an
+// object uploaded to a depot.
+message Chunk {
+    // For chunk upload, this tx hash is the associated tx hash, meaning it is
+    // the commit tx hash for init upload and audit tx hash for audit upload.
+    // For chunk download, this tx hash is always the init commit tx hash.
+    bytes tx_hash = 1;
+    // The Merkle tree root hash of the data before transcoding
+    // (i.e. orginal data).
+    bytes hash = 2;
+    // Chunk index within the object chunk array for identification purpose.
+    uint32 index = 3;
+    // Blocks belong to this chunk.
+    repeated Block blocks = 4;
+    // Merkle proof of the chunk.
+    repeated bytes proof = 5;
+}

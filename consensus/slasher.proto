@@ -1,0 +1,104 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "google/api/annotations.proto";
+
+import "ext/options.proto";
+import "consensus/block.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "SlasherProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+
+// Slasher service API
+//
+// Slasher service provides an interface for checking if attestations or blocks
+// are slashable.
+service Slasher {
+  // Returns any found attester slashings for an input indexed attestation.
+  rpc IsSlashableAttestation(IndexedAttestation)
+      returns (AttesterSlashingResponse) {
+    option (google.api.http) = {
+      post : "/eth/v1alpha1/slasher/attestations/slashable",
+      body : "*"
+    };
+  }
+
+  // Returns any found proposer slashings for an input signed block header.
+  rpc IsSlashableBlock(SignedBlockHeader)
+      returns (ProposerSlashingResponse) {
+    option (google.api.http) = {
+      get : "/eth/v1alpha1/slasher/blocks/slashable"
+    };
+  }
+
+  // Returns the highest source and target attestation for validator indices
+  // that have been observed by slasher.
+  rpc HighestAttestations(HighestAttestationRequest)
+      returns (HighestAttestationResponse) {
+    option (google.api.http) = {
+      get : "/eth/v1alpha1/slasher/attestations/highest"
+    };
+  }
+}
+
+message AttesterSlashingResponse {
+  repeated AttesterSlashing attester_slashings = 1;
+}
+
+message ProposerSlashingResponse {
+  repeated ProposerSlashing proposer_slashings = 1;
+}
+
+message HighestAttestationRequest { repeated uint64 validator_indices = 1; }
+
+message HighestAttestationResponse {
+  repeated HighestAttestation attestations = 1;
+}
+
+message HighestAttestation {
+  uint64 validator_index = 1;
+  uint64 highest_source_epoch = 2
+      [ (photon.ext.cast_type) =
+            "Epoch" ];
+  uint64 highest_target_epoch = 3
+      [ (photon.ext.cast_type) =
+            "Epoch" ];
+}
+
+// ProposalHistory defines the structure for recording a validator's historical
+// proposals. Using a bitlist to represent the epochs and an uint64 to mark the
+// latest marked epoch of the bitlist, we can easily store which epochs a
+// validator has proposed a block for while pruning the older data.
+message ProposalHistory {
+  bytes epoch_bits = 1 [
+    (photon.ext.cast_type) =
+        "github.com/prysmaticlabs/go-bitfield.Bitlist",
+    deprecated = true
+  ];
+  uint64 latest_epoch_written = 2 [
+    (photon.ext.cast_type) = "Epoch",
+    deprecated = true
+  ];
+}
+
+message Slashable { bool slashable = 1 [ deprecated = true ]; }
+
+// AttestationHistory defines the structure for recording a validator's
+// historical attestation. Using a map[uint64]uint64 to map its target epoch to
+// its source epoch, in order to detect if a vote being created is not a double
+// vote and surrounded by, or surrounding any other votes. Using an uint64 to
+// mark the latest written epoch, we can safely perform a rolling prune whenever
+// the history is updated.
+message AttestationHistory {
+  map<uint64, uint64> target_to_source = 1 [ deprecated = true ];
+  uint64 latest_epoch_written = 2 [
+    (photon.ext.cast_type) = "Epoch",
+    deprecated = true
+  ];
+}

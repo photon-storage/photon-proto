@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "ext/options.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "TransactionProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+// Transaction type enum.
+enum TxType {
+    // TX_INVALID type prevents from defaulting to a valid transaction type.
+    TX_INVALID = 0;
+    // BALANCE_TRANSFER transfers balance between accounts.
+    BALANCE_TRANSFER = 1;
+    // VALIDATOR_DEPOSIT depotis balance for being a validator.
+    VALIDATOR_DEPOSIT = 2;
+    // VALIDATOR_EXIT initiates a voluntary exit for a validator.
+    VALIDATOR_EXIT = 3;
+    // AUDITOR_DEPOSIT deposit balance for being an auditor.
+    AUDITOR_DEPOSIT = 4;
+    // AUDITOR_EXIT initiates a voluntary exit for an auditor.
+    AUDITOR_EXIT = 5;
+    // OBJECT_COMMIT creates a new storage contract committing a data object.
+    OBJECT_COMMIT = 6;
+    // OBJECT_AUDIT updates a storage contract after object data audit completion.
+    OBJECT_AUDIT = 7;
+    // OBJECT_POR updates a storage contract with PoR proof data.
+    OBJECT_POR = 8;
+}
+
+message Transaction {
+    // Type defines concrete type of the payload data. Equivalent to TxType.
+    // Use uint32 because SSZ does not support proto enum type.
+    uint32 type = 1;
+
+    // Transaction originator's public key.
+    bytes from = 2 [(photon.ext.ssz_size) = "48"];
+
+    // ID of the chain to which the transaction is submitted.
+    uint32 chain_id = 3;
+
+    // Transaction nonce for preventing replay attacks.
+    uint64 nonce = 4;
+
+    // Gas price to pay for the transaction.
+    uint64 gas_price = 5;
+
+    // Total gas spend upper bound for the transaction. For EVM transactions,
+    // the limit caps total gas spend for the transaction. Transaction
+    // execution that exceeds this limit leads to out of gas failure. For
+    // pre-defined transaction types, the gas limit would be equivalnt to
+    // total amount of gas required to execute the transaction given the
+    // defined gas price.
+    uint64 gas_limit = 6;
+
+    // Transaction data by type.
+    TxDataBalanceTransfer txDataBalanceTransfer = 101;
+    TxDataValidatorDeposit txDataValidatorDeposit = 102;
+    TxDataAuditorDeposit txDataAuditorDeposit = 104;
+    TxDataObjectCommit txDataObjectCommit = 106;
+    TxDataObjectAudit txDataObjectAudit = 107;
+    TxDataObjectPoR txDataObjectPoR = 108;
+}
+
+// Balance transfer transaction data.
+message TxDataBalanceTransfer {
+    // Balance transfer destination account's public key.
+    bytes to = 1 [(photon.ext.ssz_size) = "48"];
+
+    // Amount of balance to transfer.
+    uint64 amount = 2;
+}
+
+// Validator deposit transaction data.
+message TxDataValidatorDeposit {
+    // Amount of deposit.
+    uint64 amount = 1;
+}
+
+// Auditor deposit transaction data.
+message TxDataAuditorDeposit {
+    // Amount of deposit.
+    uint64 amount = 1;
+}
+
+// TxDataObjectCommit is an object's storage contract for its initial commit.
+message TxDataObjectCommit {
+    // The public key of the data owner.
+    bytes owner = 1 [(photon.ext.ssz_size) = "48"];
+
+    // The public key of the storage provider.
+    bytes depot = 2 [(photon.ext.ssz_size) = "48"];
+
+    // The p2p network discovery ID used for finding depot RPC endpoint.
+    bytes depot_discovery_id = 3 [(photon.ext.ssz_size) = "32"];
+
+    // The Merkle tree root hash of the object's original data.
+    bytes hash = 4 [(photon.ext.ssz_size) = "32"];
+
+    // The size of the object's original data to be stored.
+    uint64 size = 5;
+
+    // Number of slots that the storage provider needs to maintain the data.
+    uint64 duration = 6 [(photon.ext.cast_type) = "Slot"];
+
+    // Total storage fee that data owner paid.
+    uint64 fee = 7;
+
+    // Storage providers collateral deposit.
+    uint64 bond = 8;
+
+    // Slot deadline before which the transaction is considered valid.
+    uint64 deadline = 9 [(photon.ext.cast_type) = "Slot"];
+}
+
+// TxDataObjectAudit is an update to object's storage contract after
+// audit completion.
+message TxDataObjectAudit {
+    // The original object commit tx hash for identification.
+    bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
+
+    // The public key of the auditor.
+    bytes auditor = 2 [(photon.ext.ssz_size) = "48"];
+
+    // The public key of the storage provider.
+    bytes depot = 3 [(photon.ext.ssz_size) = "48"];
+
+    // The Merkle tree root hash of the object's original data.
+    bytes hash = 4 [(photon.ext.ssz_size) = "32"];
+
+    // The size of the object's original data to be stored.
+    uint64 size = 5;
+
+    // The Merkle tree root hash of the object's newly encoded data.
+    bytes encoded_hash = 6 [(photon.ext.ssz_size) = "32"];
+
+    // The size of the object's encoded data to be stored.
+    uint64 encoded_size = 7;
+
+    // Number of blocks of encoded data.
+    uint32 num_blocks = 8;
+
+    // Number of sectors for each block for genearting PoR sigmas.
+    uint32 sectors_per_block = 9;
+
+    // An array of random elements used to generated block signature.
+    // The count is equal to sectors_per_block.
+    // TODO(kmax): using fixed length because ssz_max would not
+    // allow nil point check and skip ssz calculation.
+    repeated bytes rands = 10 [(photon.ext.ssz_size) = "8,96"];
+}
+
+// TxDataObjectPoR is an update to object's storage contract with PoR
+// proof data.
+message TxDataObjectPoR {
+    // The original object commit tx hash for identification.
+    bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
+
+    // TODO(kmax): using fixed length because ssz_max would not
+    // allow nil point check and skip ssz calculation.
+    // Mu's generated by prover.
+    repeated bytes block_aggs = 2 [(photon.ext.ssz_size) = "8,32"];
+
+    // Aggregated block signatures generated by prover.
+    bytes sigma = 3 [(photon.ext.ssz_size) = "96"];
+}
+
+// The signed version of a transaction.
+message SignedTransaction {
+    // The unsigned transaction content.
+    Transaction tx = 1;
+
+    // 96 byte BLS signature from the account that produced this transaction.
+    bytes signature = 2 [(photon.ext.ssz_size) = "96"];
+}
+
+// Response for tx submission.
+message SubmitTxResponse {
+    uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
+    bytes tx_hash = 2;
+}

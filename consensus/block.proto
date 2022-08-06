@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "ext/options.proto";
+import "consensus/attestation.proto";
+import "consensus/transaction.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "BlockProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+// Block content exchanged over the wire. The message does not contain a validator signature.
+message Block {
+    // chain slot that this block represents.
+    uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
+
+    // Validator index of the validator that proposed the block header.
+    uint64 proposer_index = 2 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // 32 byte root of the parent block.
+    bytes parent_root = 3 [(photon.ext.ssz_size) = "32"];
+
+    // 32 byte root of the resulting state after processing this block.
+    bytes state_root = 4 [(photon.ext.ssz_size) = "32"];
+
+    // The block body.
+    BlockBody body = 5;
+}
+
+// The signed version of a block.
+message SignedBlock {
+    // The unsigned block content.
+    Block block = 1;
+
+    // 96 byte BLS signature from the validator that produced this block.
+    bytes signature = 2 [(photon.ext.ssz_size) = "96"];
+}
+
+// The block body of a block.
+message BlockBody {
+    // The validators RANDAO reveal 96 byte value.
+    bytes randao_reveal = 1 [(photon.ext.ssz_size) = "96"];
+
+    // 32 byte field of arbitrary data. This field may contain any data and
+    // is not used for anything other than a fun message.
+    bytes graffiti = 2 [(photon.ext.ssz_size) = "32"];
+
+    // Block operations
+    // At most MAX_TRANSACTIONS.
+    repeated SignedTransaction txs = 3 [(photon.ext.ssz_max) = "1024"];
+
+    // At most MAX_PROPOSER_SLASHINGS.
+    repeated ProposerSlashing proposer_slashings = 4 [(photon.ext.ssz_max) = "16"];
+
+    // At most MAX_ATTESTER_SLASHINGS.
+    repeated AttesterSlashing attester_slashings = 5 [(photon.ext.ssz_max) = "2"];
+
+    // At most MAX_ATTESTATIONS.
+    repeated Attestation attestations = 6 [(photon.ext.ssz_max) = "128"];
+}
+
+// Proposer slashings are proofs that a slashable offense has been committed by
+// proposing two conflicting blocks from the same validator.
+message ProposerSlashing {
+    // First conflicting signed block header.
+    SignedBlockHeader header_1 = 2;
+
+    // Second conflicting signed block header.
+    SignedBlockHeader header_2 = 3;
+}
+
+// Attestor slashings are proofs that a slashable offense has been committed by
+// attestating to two conflicting pieces of information by the same validator.
+message AttesterSlashing {
+    // First conflicting attestation.
+    IndexedAttestation attestation_1 = 1;
+
+    // Second conflicting attestation.
+    IndexedAttestation attestation_2 = 2;
+}
+
+// A block header is essentially a block with only a reference to the body
+// as a 32 byte merkle tree root. This type of message is more lightweight
+// than a full block. The message does not contain a validator signature.
+message BlockHeader {
+    // chain slot that this block represents.
+    uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
+
+    // Validator index of the validator that proposed the block header.
+    uint64 proposer_index = 2 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // 32 byte merkle tree root of the parent ssz encoded block.
+    bytes parent_root = 3 [(photon.ext.ssz_size) = "32"];
+
+    // 32 byte merkle tree root of the resulting ssz encoded state after processing this block.
+    bytes state_root = 4 [(photon.ext.ssz_size) = "32"];
+
+    // 32 byte merkle tree root of the ssz encoded block body.
+    bytes body_root = 5 [(photon.ext.ssz_size) = "32"];
+}
+
+message SignedBlockHeader {
+    // The unsigned block header content.
+    BlockHeader header = 1;
+
+    // 96 byte BLS signature from the validator that produced this block header.
+    bytes signature = 2 [(photon.ext.ssz_size) = "96"];
+}
+
+message IndexedAttestation {
+    repeated uint64 attesting_indices = 1 [(photon.ext.ssz_max) = "2048"];
+
+    AttestationData data = 2;
+
+    // 96 bytes aggregate signature.
+    bytes signature = 3 [(photon.ext.ssz_size) = "96"];
+}

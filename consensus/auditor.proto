@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "ext/options.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "AuditorProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+message Auditor {
+    // 48 byte BLS public key of the auditor.
+    bytes public_key = 1 [(photon.ext.ssz_size) = "48"];
+
+    // Auditor staking balance.
+    uint64 balance = 2;
+
+    // Epoch when the auditor became eligible for activation.
+    // This field is FAR_FUTURE_EPOCH if the auditor has not been activated.
+    uint64 activation_eligibility_epoch = 3 [(photon.ext.cast_type) = "Epoch"];
+
+    // Epoch when the auditor was activated.
+    // This field is FAR_FUTURE_EPOCH if the auditor has not been activated.
+    uint64 activation_epoch = 4 [(photon.ext.cast_type) = "Epoch"];
+
+    // Epoch when the auditor was exited. This field is FAR_FUTURE_EPOCH if
+    // the auditor has not exited.
+    uint64 exit_epoch = 5 [(photon.ext.cast_type) = "Epoch"];
+
+    // Epoch when the auditor is eligible to withdraw their funds. This field
+    // is FAR_FUTURE_EPOCH if the auditor has not exited.
+    uint64 withdrawable_epoch = 6 [(photon.ext.cast_type) = "Epoch"];
+}
+
+enum AuditorStatus {
+    AUDITOR_UNKNOWN_STATUS = 0;
+    AUDITOR_PENDING = 1;
+    AUDITOR_ACTIVE = 2;
+    AUDITOR_EXITING = 3;
+    AUDITOR_EXITED = 4;
+}
+
+message AuditorStatusRequest {
+    // A 48 byte auditor public key.
+    bytes public_key = 1 [(photon.ext.ssz_size) = "48"];
+}
+
+message AuditorStatusResponse {
+    // The corresponding auditor status.
+    AuditorStatus status = 1;
+
+    // The epoch in the chain in which the auditor is determined as active.
+    uint64 activation_epoch = 2 [(photon.ext.cast_type) = "Epoch"];
+}

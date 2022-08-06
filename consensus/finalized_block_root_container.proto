@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "FinalizedBlockRootContainerProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+
+message FinalizedBlockRootContainer {
+    bytes parent_root = 1;
+    bytes child_root = 2;
+}

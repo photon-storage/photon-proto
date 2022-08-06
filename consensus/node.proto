@@ -1,0 +1,1150 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+import "ext/options.proto";
+import "consensus/account.proto";
+import "consensus/block.proto";
+import "consensus/transaction.proto";
+import "consensus/contract.proto";
+import "consensus/attestation.proto";
+import "consensus/validator.proto";
+import "consensus/auditor.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "NodeProto";
+option java_package = "storage.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+
+// Node API
+//
+// The node API can be used to access data relevant to the Chain.
+service Node {
+    // TODO(preston): Batch requests?
+
+    // Retrieve attestations by block root, slot, or epoch.
+    //
+    // The server may return an empty list when no attestations match the given
+    // filter criteria. This RPC should not return NOT_FOUND. Only one filter
+    // criteria should be used. This endpoint allows for retrieval of genesis
+    // information via a boolean query filter.
+    rpc ListAttestations(ListAttestationsRequest) returns (ListAttestationsResponse) {
+        option (google.api.http) = {
+            get: "/node/attestations"
+        };
+    }
+
+    // Retrieve indexed attestations by block root, slot, or epoch.
+    //
+    // The server may return an empty list when no indexed attestations match the given
+    // filter criteria. This RPC should not return NOT_FOUND. Only one filter
+    // criteria should be used. This endpoint allows for retrieval of genesis
+    // information via a boolean query filter.
+    rpc ListIndexedAttestations(ListIndexedAttestationsRequest) returns (ListIndexedAttestationsResponse) {
+        option (google.api.http) = {
+            get: "/node/attestations/indexed"
+        };
+    }
+
+    // Server-side stream of attestations as they are received by the chain node.
+    rpc StreamAttestations(google.protobuf.Empty) returns (stream Attestation) {
+        option (google.api.http) = {
+            get: "/node/attestations/stream"
+        };
+    }
+
+    // Server-side stream of indexed attestations as they are received by the chain node.
+    rpc StreamIndexedAttestations(google.protobuf.Empty) returns (stream IndexedAttestation) {
+        option (google.api.http) = {
+            get: "/node/attestations/indexed/stream"
+        };
+    }
+
+    // Retrieve attestations from pool.
+    //
+    // The server returns a list of attestations that have been seen but not
+    // yet processed. Pool attestations eventually expire as the slot
+    // advances, so an attestation missing from this request does not imply
+    // that it was included in a block. The attestation may have expired.
+    // Refer to the Ethereum Beacon Chain specification for more details on how
+    // attestations are processed and when they are no longer valid.
+    // https://github.com/ethereum/consensus-specs/blob/dev/specs/core/0_beacon-chain.md#attestations
+    rpc AttestationPool(AttestationPoolRequest) returns (AttestationPoolResponse) {
+        option (google.api.http) = {
+            get: "/node/attestations/pool"
+        };
+    }
+
+    // Retrieve blocks by root, slot, or epoch.
+    //
+    // The server may return multiple blocks in the case that a slot or epoch is
+    // provided as the filter criteria. The server may return an empty list when
+    // no blocks in their database match the filter criteria. This RPC should
+    // not return NOT_FOUND. Only one filter criteria should be used. This endpoint
+    // allows for retrieval of genesis information via a boolean query filter.
+    rpc ListBlocks(ListBlocksRequest) returns (ListBlocksResponse) {
+        option (google.api.http) = {
+            get: "/node/blocks/list"
+        };
+    }
+
+    // Server-side stream of all signed blocks as they are received by the chain node.
+    rpc StreamBlocks(StreamBlocksRequest) returns (stream SignedBlock) {
+        option (google.api.http) = {
+            get: "/node/blocks/stream"
+        };
+    }
+
+    // Server-side stream of information about the head of the chain from the view of
+    // the chain node.
+    //
+    // This includes the head block slot and root as well as information about
+    // the most recent finalized and justified slots.
+    rpc StreamChainHead(google.protobuf.Empty) returns (stream ChainHead) {
+        option (google.api.http) = {
+            get: "/node/chainhead/stream"
+        };
+    }
+
+    // Retrieve information about the head of the chain from the view of the chain node.
+    //
+    // This includes the head block slot and root as well as information about
+    // the most recent finalized and justified slots.
+    rpc GetChainHead(google.protobuf.Empty) returns (ChainHead) {
+        option (google.api.http) = {
+            get: "/node/chainhead"
+        };
+    }
+
+    // Retrieve information about the weak subjectivity of the chain from the view of
+    // the chain node.
+    //
+    // This includes the weak subjectivity block root, state root and epoch number.
+    rpc GetWeakSubjectivityCheckpoint(google.protobuf.Empty) returns (WeakSubjectivityCheckpoint) {
+        option (google.api.http) = {
+            get: "/node/weak_subjectivity_checkpoint"
+        };
+    }
+
+    // Retrieve the chain committees for a given epoch.
+    //
+    // If no filter criteria is specified, the response returns all committees for
+    // the current epoch. The results are paginated by default.
+    // This endpoint allows for retrieval of genesis information via a boolean query filter.
+    rpc ListCommittees(ListCommitteesRequest) returns (Committees) {
+        option (google.api.http) = {
+            get: "/node/committees"
+        };
+    }
+
+    // Retrieve validator balances for a given set of public keys at a specific
+    // epoch in time. This endpoint allows for retrieval of genesis information
+    // via a boolean query filter.
+    rpc ListValidatorBalances(ListValidatorBalancesRequest) returns (ValidatorBalances) {
+        option (google.api.http) = {
+            get: "/node/validators/balances"
+        };
+    }
+
+    // Retrieve the current validator registry.
+    //
+    // The request may include an optional historical epoch to retrieve a
+    // specific validator set in time. This endpoint allows for retrieval of genesis
+    // information via a boolean query filter.
+    rpc ListValidators(ListValidatorsRequest) returns (Validators) {
+        option (google.api.http) = {
+            get: "/node/validators"
+        };
+    }
+
+    // Retrieve information about a specific validator in the registry.
+    //
+    // This request may query by validator index or public key.
+    rpc GetValidator(GetValidatorRequest) returns (Validator) {
+        option (google.api.http) = {
+            get: "/node/validator"
+        };
+    }
+
+    // Retrieve the active set changes for a given epoch.
+    //
+    // This data includes any activations, voluntary exits, and involuntary
+    // ejections. This endpoint allows for retrieval of genesis
+    // information via a boolean query filter.
+    rpc GetValidatorActiveSetChanges(GetValidatorActiveSetChangesRequest) returns (ActiveSetChanges) {
+        option (google.api.http) = {
+            get: "/node/validators/activesetchanges"
+        };
+    }
+
+    // Retrieve the current validator queue information.
+    rpc GetValidatorQueue(google.protobuf.Empty) returns (ValidatorQueue) {
+        option (google.api.http) = {
+            get: "/node/validators/queue"
+        };
+    }
+
+    // GetValidatorPerformance reports a validator's latest balance along with other important
+    // metrics on rewards and penalties throughout its lifecycle in the chain.
+    // The request takes in a list of validator public keys and returns a performance report
+    // for all of them respectively.
+    rpc GetValidatorPerformance(ValidatorPerformanceRequest) returns (ValidatorPerformanceResponse) {
+        option (google.api.http) = {
+            get: "/node/validators/performance"
+        };
+    }
+
+    // Retrieve the validator assignments for a given epoch.
+    //
+    // This request may specify optional validator indices or public keys to
+    // filter validator assignments. This endpoint allows for retrieval of genesis
+    // information via a boolean query filter.
+    rpc ListValidatorAssignments(ListValidatorAssignmentsRequest) returns (ValidatorAssignments) {
+        option (google.api.http) = {
+            get: "/node/validators/assignments"
+        };
+    }
+
+    // Retrieve the validator participation information for a given epoch.
+    //
+    // This method returns information about the global participation of
+    // validator attestations. This endpoint allows for retrieval of genesis
+    // information via a boolean query filter.
+    rpc GetValidatorParticipation(GetValidatorParticipationRequest) returns (ValidatorParticipationResponse) {
+        option (google.api.http) = {
+            get: "/node/validators/participation"
+        };
+    }
+
+    // Retrieve the current configuration parameters of the chain.
+    rpc GetChainConfig(google.protobuf.Empty) returns (ChainConfig) {
+        option (google.api.http) = {
+            get: "/node/config"
+        };
+    }
+
+    // Server-side stream of validator information at each epoch.
+    rpc StreamValidatorsInfo(stream ValidatorChangeSet) returns (stream ValidatorInfo) {
+        option (google.api.http) = {
+            get: "/node/validators/info/stream"
+        };
+    }
+
+    // Submit an attester slashing object to the node.
+    rpc SubmitAttesterSlashing(AttesterSlashing) returns (SubmitSlashingResponse) {
+        option (google.api.http) = {
+            get: "/node/slashings/attester/submit"
+        };
+    }
+
+    // Submit a proposer slashing object to the node.
+    rpc SubmitProposerSlashing(ProposerSlashing) returns (SubmitSlashingResponse) {
+        option (google.api.http) = {
+            get: "/node/slashings/proposer/submit"
+        };
+    }
+
+    // Returns a list of validators individual vote status of a given epoch.
+    rpc GetIndividualVotes(IndividualVotesRequest) returns (IndividualVotesRespond) {
+        option (google.api.http) = {
+            get: "/node/individual_votes"
+        };
+    }
+
+    // Submit a transaction to the node.
+    rpc SubmitTx(SignedTransaction) returns (SubmitTxResponse) {
+        option (google.api.http) = {
+            post: "/node/tx/submit"
+            body: "*"
+        };
+    }
+
+    // Retrieve a storage contract for a given request.
+    rpc GetStorageContract(GetStorageContractRequest) returns (GetStorageContractResponse) {
+        option (google.api.http) = {
+            post: "/node/storage_contract/get"
+            body: "*"
+        };
+    }
+
+    // Returns data of a finalized epoch.
+    rpc GetFinalizedEpoch(FinalizedEpochRequest) returns (FinalizedEpochResponse) {
+        option (google.api.http) = {
+            post: "/node/epoch/get"
+            body: "*"
+        };
+    }
+
+    // Server-side stream of finalized epoch updates.
+    rpc StreamFinalizedEpoch(StreamFinalizedEpochRequest) returns (stream FinalizedEpochResponse) {
+        option (google.api.http) = {
+            get: "/node/epoch/stream"
+        };
+    }
+
+    // Request account info from the node
+    rpc GetAccount(AccountRequest) returns (Account) {
+        option (google.api.http) = {
+            post: "/node/account"
+            body: "*"
+        };
+    }
+
+    //
+    // APIs defined below are used by validator. Then enable a validator to connect
+    // and perform its obligations on the Chain.
+    //
+
+    // Retrieves validator duties for the requested validators.
+    //
+    // The duties consist of:
+    //   Proposer - the validator that creates a chain block.
+    //   Attester — a validator that is part of a committee that needs to sign off
+    //      on a chain block while simultaneously creating a cross link to a recent
+    //      shard block on a particular shard chain.
+    // The server returns a list of duties which are the actions should be performed
+    // by validators for a given epoch. Validator duties should be polled every epoch,
+    // but due to chain reorg of >MIN_SEED_LOOKAHEAD could occur, the validator duties
+    // could chain. For complete safety, it is recommended to poll at every slot to ensure
+    // validator is fully aware of any sudden chain reorg.
+    rpc GetDuties(DutiesRequest) returns (DutiesResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/duties"
+        };
+    }
+
+    // Stream validator duties for the requested validators.
+    //
+    // The duties consist of:
+    //   Proposer - the validator that creates a chain block.
+    //   Attester — a validator that is part of a committee that needs to sign off on a chain
+    rpc StreamDuties(DutiesRequest) returns (stream DutiesResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/duties/stream"
+        };
+    }
+
+    // WaitForChainStart queries the logs of the Validator Deposit Contract on the Ethereum
+    // proof-of-work chain to verify the chain has started its runtime and
+    // validators are ready to begin their responsibilities.
+    //
+    // If the chain has not yet started, this endpoint starts a server-side stream which updates
+    // the client when the chain is ready.
+    rpc WaitForChainStart(google.protobuf.Empty) returns (stream ChainStartResponse) {
+        option deprecated = true;
+        option (google.api.http) = {
+            get: "/node/validator/chainstart/stream"
+        };
+    }
+
+    // WaitForActivation checks if a validator public key exists in the active validator
+    // registry of the current state. If the validator is NOT yet active, it starts a
+    // server-side stream which updates the client whenever the validator becomes active in
+    // the node's state.
+    //
+    // The input to this endpoint is a list of validator public keys, and the corresponding
+    // stream will respond until at least a single corresponding validator to those
+    // keys is activated.
+    rpc WaitForActivation(ValidatorActivationRequest) returns (stream ValidatorActivationResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/activation/stream"
+        };
+    }
+
+    // ValidatorIndex retrieves a validator's index location in the state's
+    // validator registry looking up whether the validator exists based on its
+    // public key. This method returns NOT_FOUND if no index is found for the public key
+    // specified in the request.
+    rpc ValidatorIndex(ValidatorIndexRequest) returns (ValidatorIndexResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/index"
+        };
+    }
+
+    // ValidatorStatus returns a validator's status based on the current epoch.
+    //
+    // The status response can be one of the following:
+    //	UNKNOWN_VALIDATOR_STATUS - validator does not have a known status in
+    //                             the network.
+    //	VALIDATOR_PENDING - validator is in activation queue.
+    //	VALIDATOR_ACTIVE - validator is active.
+    //	VALIDATOR_EXITING - validator has initiated an an exit request, or has
+    //                      dropped below the ejection balance and is being
+    //                      kicked out.
+    //	VALIDATOR_EXITED - validator is no longer validating.
+    //	VALIDATOR_SLASHING - validator has been kicked out due to meeting a
+    //                       slashing condition.
+    rpc ValidatorStatus(ValidatorStatusRequest) returns (ValidatorStatusResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/status"
+        };
+    }
+
+    // MultipleValidatorStatus returns a list of validator statuses on the current epoch.
+    // The request can specify a list of validator public keys.
+    //
+    // Returns a list of ValidatorStatusResponses.
+    rpc MultipleValidatorStatus(MultipleValidatorStatusRequest) returns (MultipleValidatorStatusResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/statuses"
+        };
+    }
+
+    // AuditorStatus returns a auditor's status based on the current epoch.
+    //
+    // The status response can be one of the following:
+    //	UNKNOWN_AUDITOR_STATUS - auditor does not have a known status in
+    //                           the network.
+    //	AUDITOR_PENDING - auditor is in activation queue.
+    //	AUDITOR_ACTIVE - auditor is active.
+    //	AUDITOR_EXITING - auditor has initiated an an exit request, or has
+    //                    dropped below the ejection balance and is being
+    //                    kicked out.
+    //	AUDITOR_EXITED - auditor is no longer serving.
+    rpc AuditorStatus(AuditorStatusRequest) returns (AuditorStatusResponse) {
+        option (google.api.http) = {
+            get: "/node/auditor/status"
+        };
+    }
+
+    // Retrieves the latest valid block to be proposed on the chain.
+    //
+    // The server returns a new block, without proposer signature, that can be
+    // proposed on the chain. The block should be filled with all the necessary
+    // data for proposer to sign.
+    rpc GetBlock(BlockRequest) returns (Block) {
+        option (google.api.http) = {
+            get: "/eth/v1alpha2/validator/block"
+        };
+    }
+
+    // Sends the newly signed block to node.
+    //
+    // The validator sends the newly signed block to the node so the block can
+    // be included in the chain. The node is expected to validate and process the
+    // block into its state.
+    rpc ProposeBlock(SignedBlock) returns (ProposeResponse) {
+        option (google.api.http) = {
+            post: "/eth/v1alpha2/validator/block"
+            body: "*"
+        };
+    }
+
+    // Retrieves the latest valid attestation data to be attested on the chain.
+    //
+    // The server returns the latest valid data which represents the correct vote
+    // for the head of the chain.
+    rpc GetAttestationData(AttestationDataRequest) returns (AttestationData) {
+        option (google.api.http) = {
+            get: "/node/validator/attestation"
+        };
+    }
+
+    // Sends the newly signed attestation to node.
+    //
+    // The validator sends the newly signed attestation to the node for the attestation to
+    // be included in the chain. The node is expected to validate and publish attestation on
+    // appropriate committee subnet.
+    rpc ProposeAttestation(Attestation) returns (AttestResponse) {
+        option (google.api.http) = {
+            post: "/node/validator/attestation"
+            body: "*"
+        };
+    }
+
+
+    // Submit selection proof to the node to aggregate all matching wire attestations with the same data root.
+    // the node responses with an aggregate and proof object back to validator to sign over.
+    rpc SubmitAggregateSelectionProof(AggregateSelectionRequest) returns (AggregateSelectionResponse) {
+        option (google.api.http) = {
+            post: "/node/validator/aggregate"
+            body: "*"
+        };
+    }
+
+    // Submit a signed aggregate and proof object, the node will broadcast the
+    // signed aggregated attestation and proof object.
+    rpc SubmitSignedAggregateSelectionProof(SignedAggregateSubmitRequest) returns (SignedAggregateSubmitResponse) {
+        option (google.api.http) = {
+            post: "/node/validator/signed_aggregate"
+            body: "*"
+        };
+    }
+
+    // Subscribe to particular committee ID subnets given validator's duty.
+    //
+    // The node is expected to subscribe to the committee ID subnet given by the request. With this,
+    // node serving attesters can find persistent peers on the subnet to publish attestation,
+    // and node serving aggregator can join the subnet.
+    rpc SubscribeCommitteeSubnets(CommitteeSubnetsSubscribeRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/node/validator/subnet/subscribe"
+            body: "*"
+        };
+    }
+
+    // Checks the node if another instance of the provided validator keys have been
+    // attesting/proposing for you.
+    rpc CheckDoppelGanger(DoppelGangerRequest) returns (DoppelGangerResponse) {
+        option (google.api.http) = {
+            get: "/node/validator/doppelganger"
+        };
+    }
+}
+
+// SetAction defines the type of action that should be applied to the keys in a validator change set.
+enum SetAction {
+    // ADD_VALIDATOR_KEYS adds to the existing keys.
+    ADD_VALIDATOR_KEYS = 0;
+    // REMOVE_VALIDATOR_KEYS removes from the existing keys.
+    REMOVE_VALIDATOR_KEYS = 1;
+    // SET_VALIDATOR_KEYS overwrites the existing keys.
+    SET_VALIDATOR_KEYS = 2;
+}
+
+// ValidatorChangeSet updates the server's list of keys on which to operate.
+message ValidatorChangeSet {
+    // Action (add/remove/set).
+    SetAction action = 1;
+
+    // 48 byte BLS public keys of validators on which the operation occurs.
+    repeated bytes public_keys = 2;
+}
+
+// Request for indexed attestations by target epoch.
+message ListIndexedAttestationsRequest {
+    oneof query_filter {
+        // Retrieve attestations by epoch processed.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve genesis epoch attestations.
+        bool genesis_epoch = 2;
+    }
+
+    // The maximum number of IndexedAttestations to return in the response.
+    // This field is optional.
+    int32 page_size = 3;
+
+    // A pagination token returned from a previous call to `ListIndexedAttestations`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 4;
+}
+
+// Request for attestations.
+message ListAttestationsRequest {
+    // TODO(preston): Test oneof with gRPC gateway.
+
+    oneof query_filter {
+        // Filter attestations by epoch processed.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve attestations from 0 epoch.
+        bool genesis_epoch = 2;
+    }
+
+    // The maximum number of Attestations to return in the response.
+    // This field is optional.
+    int32 page_size = 3;
+
+    // A pagination token returned from a previous call to `ListAttestations`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 4;
+}
+
+message ListAttestationsResponse {
+    repeated Attestation attestations = 1;
+
+    // A pagination token returned from a previous call to `ListAttestations`
+    // that indicates from where listing should continue.
+    // This field is optional.
+    string next_page_token = 2;
+
+    // Total count of Attestations matching the request filter.
+    int32 total_size = 3;
+}
+
+message ListIndexedAttestationsResponse {
+    repeated IndexedAttestation indexed_attestations = 1;
+
+    // A pagination token returned from a previous call to `ListIndexedAttestations`
+    // that indicates from where listing should continue.
+    // This field is optional.
+    string next_page_token = 2;
+
+    // Total count of Attestations matching the request filter.
+    int32 total_size = 3;
+}
+
+message ListBlocksRequest {
+    oneof query_filter {
+        // Block root filter to return a single block.
+        bytes root = 1;
+
+        // Slot to lookup a block. If the slot is not yet finalized, this
+        // criteria may yield multiple valid blocks if the node has seen blocks
+        // from another fork.
+        uint64 slot = 2 [(photon.ext.cast_type) = "Slot"];
+
+        // The epoch number for which to retrieve blocks. If specified, this
+        // will return all blocks found within the span of the specified epoch.
+        uint64 epoch = 3 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve genesis block.
+        bool genesis = 4;
+    }
+
+    // The maximum number of Blocks to return in the response.
+    // This field is optional.
+    int32 page_size = 5;
+
+    // A pagination token returned from a previous call to `ListBlocks`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 6;
+}
+
+message ListBlocksResponse {
+    repeated BlockContainer block_containers = 1;
+
+    // A pagination token returned from a previous call to `ListBlocks`
+    // that indicates from where listing should continue.
+    // This field is optional.
+    string next_page_token = 2;
+
+    // Total count of Blocks matching the request filter.
+    int32 total_size = 3;
+}
+
+// A container that contains the block, its corresponding root, and whether or
+// not it is canonical in the chain.
+message BlockContainer {
+    // 32 byte merkle tree root of contained block.
+    bytes block_root = 1;
+
+    // Boolean indicating whether the block is canonical.
+    bool canonical = 2;
+
+    // The desired block to be returned.
+    oneof block {
+        // Representing an altair block.
+        SignedBlock altair_block = 4;
+    }
+}
+
+// Information about the head of the chain.
+message ChainHead {
+    // Slot of the head block.
+    uint64 head_slot = 1 [(photon.ext.cast_type) = "Slot"];
+
+    // Epoch of the head block.
+    uint64 head_epoch = 2 [(photon.ext.cast_type) = "Epoch"];
+
+    // 32 byte merkle tree root of the canonical head block in the node.
+    bytes head_block_root = 3 [(photon.ext.ssz_size) = "32"];
+
+    // Most recent slot that contains the finalized block.
+    uint64 finalized_slot = 4 [(photon.ext.cast_type) = "Slot"];
+
+    // Epoch of the finalized block.
+    uint64 finalized_epoch = 5 [(photon.ext.cast_type) = "Epoch"];
+
+    // Most recent 32 byte finalized block root.
+    bytes finalized_block_root = 6 [(photon.ext.ssz_size) = "32"];
+
+    // Most recent slot that contains the justified block.
+    uint64 justified_slot = 7 [(photon.ext.cast_type) = "Slot"];
+
+    // Epoch of the justified block.
+    uint64 justified_epoch = 8 [(photon.ext.cast_type) = "Epoch"];
+
+    // Most recent 32 byte justified block root.
+    bytes justified_block_root = 9 [(photon.ext.ssz_size) = "32"];
+
+    // Most recent slot that contains the previous justified block.
+    uint64 previous_justified_slot = 10 [(photon.ext.cast_type) = "Slot"];
+
+    // Epoch of the previous justified block.
+    uint64 previous_justified_epoch = 11 [(photon.ext.cast_type) = "Epoch"];
+
+    // Previous 32 byte justified block root.
+    bytes previous_justified_block_root = 12 [(photon.ext.ssz_size) = "32"];
+}
+
+message ListCommitteesRequest {
+    oneof query_filter {
+        // Optional criteria to retrieve data at a specific epoch.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve genesis data.
+        bool genesis = 2;
+    }
+}
+
+message Committees {
+    message CommitteeItem {
+        // A committee is a list of validator indices participating in consensus at a slot.
+        repeated uint64 validator_indices = 1 [(photon.ext.cast_type) = "ValidatorIndex"];
+    }
+
+    message CommitteesList {
+        // A list of committees.
+        repeated CommitteeItem committees = 1;
+    }
+
+    // The epoch for which the committees in the response belong to.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+    // A map of validator committees by slot.
+    map<uint64, CommitteesList> committees = 2;
+
+    // The number of active validators at the given epoch.
+    uint64 active_validator_count = 3;
+}
+
+message ListValidatorBalancesRequest {
+    oneof query_filter {
+        // Optional criteria to retrieve balances at a specific epoch.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve the genesis list of balances.
+        bool genesis = 2;
+    }
+
+    // Validator 48 byte BLS public keys to filter validators for the given
+    // epoch.
+    repeated bytes public_keys = 3 [(photon.ext.ssz_size) = "?,48"];
+    // Validator indices to filter validators for the given epoch.
+    repeated uint64 indices = 4 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // The maximum number of Validators to return in the response.
+    // This field is optional.
+    int32 page_size = 5;
+
+    // A pagination token returned from a previous call to `GetValidators`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 6;
+}
+
+message ValidatorBalances {
+    // Epoch which the state was considered to determine the validator balances.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+    message Balance {
+        // Validator's 48 byte BLS public key.
+        bytes public_key = 1 [(photon.ext.ssz_size) = "48"];
+
+        // Validator's index in the validator set.
+        uint64 index = 2 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+        // Validator's balance in gwei.
+        uint64 balance = 3;
+
+        // Validator's status, UNKNOWN if not found.
+        string status = 4;
+    }
+
+    repeated Balance balances = 2;
+
+    // A pagination token returned from a previous call to `GetListValidatorBalances`
+    // that indicates from where listing should continue.
+    string next_page_token = 3;
+
+    // Total count of items matching the request filter.
+    int32 total_size = 4;
+}
+
+message ListValidatorsRequest {
+    oneof query_filter {
+        // Optional criteria to retrieve validators at a specific epoch.
+        // Omitting this field or setting it to zero will retrieve a response
+        // with the current active validator set.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve the genesis set of validators.
+        bool genesis = 2;
+    }
+
+    // Specify whether or not you want to retrieve only active validators.
+    bool active = 3;
+
+    // The maximum number of Validators to return in the response.
+    // This field is optional.
+    int32 page_size = 4;
+
+    // A pagination token returned from a previous call to `GetValidators`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 5;
+
+    // Specify which validators you would like to retrieve by their public keys.
+    // This field is optional.
+    repeated bytes public_keys = 6;
+
+    // Specify which validators you would like to retrieve by their indices.
+    // This field is optional.
+    repeated uint64 indices = 7 [(photon.ext.cast_type) = "ValidatorIndex"];
+}
+
+message GetValidatorRequest {
+    oneof query_filter {
+        // Validator index in the registry.
+        uint64 index = 1 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+        // 48 byte validator public key.
+        bytes public_key = 2 [(photon.ext.ssz_size) = "48"];
+    }
+}
+
+message Validators {
+    // Epoch which the state was considered to determine the active validator
+    // set. This field is not optional. Zero value epoch indicates the validator
+    // set is from the Ethereum proof of stake genesis set.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+    message ValidatorContainer {
+        uint64 index = 1 [(photon.ext.cast_type) = "ValidatorIndex"];
+        Validator validator = 2;
+    }
+
+    repeated ValidatorContainer validator_list = 2;
+
+    // A pagination token returned from a previous call to `GetValidators`
+    // that indicates from where listing should continue.
+    // This field is optional.
+    string next_page_token = 3;
+
+    // Total count of Validators matching the request filter.
+    int32 total_size = 4;
+}
+
+message GetValidatorActiveSetChangesRequest {
+    oneof query_filter {
+        // Optional criteria to retrieve balances at a specific epoch.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Optional criteria to retrieve the genesis list of balances.
+        bool genesis = 2;
+    }
+}
+
+message ActiveSetChanges {
+    // Epoch which the state was considered to determine the active validator
+    // set.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+    // 48 byte validator public keys that have been activated in the given epoch.
+    repeated bytes activated_public_keys = 2 [(photon.ext.ssz_size) = "?,48"];
+
+    // Indices of validators activated in the given epoch.
+    repeated uint64 activated_indices = 3 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // 48 byte validator public keys that have been voluntarily exited in the given epoch.
+    repeated bytes exited_public_keys = 4 [(photon.ext.ssz_size) = "?,48"];
+
+    // Indices of validators exited in the given epoch.
+    repeated uint64 exited_indices = 5 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // 48 byte validator public keys that have been slashed in the given epoch.
+    repeated bytes slashed_public_keys = 6 [(photon.ext.ssz_size) = "?,48"];
+
+    // Indices of validators slashed in the given epoch.
+    repeated uint64 slashed_indices = 7 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // 48 byte validator public keys that have been involuntarily ejected in this epoch.
+    repeated bytes ejected_public_keys = 8 [(photon.ext.ssz_size) = "?,48"];
+
+    // Indices of validators ejected in the given epoch.
+    repeated uint64 ejected_indices = 9 [(photon.ext.cast_type) = "ValidatorIndex"];
+}
+
+message ValidatorPerformanceRequest {
+    // A list of 48 byte validator public keys.
+    repeated bytes public_keys = 1 [deprecated = true];
+    // A list of validator indices to retrieve performance by their indices.
+    repeated uint64 indices = 2 [(photon.ext.cast_type) = "ValidatorIndex"];
+}
+
+message ValidatorPerformanceResponse {
+    // A list of validator effective balances mapped 1-to-1 with the request's
+    // public keys.
+    repeated uint64 current_effective_balances = 1;
+    // The slot of when validator's attestation got included in the chain at previous epoch, the slot
+    // is mapped 1-to-1 with the request's public keys.
+    // Deprecated: This field can no longer be fetched from the state after the Altair hard fork.
+    repeated uint64 inclusion_slots = 2 [(photon.ext.cast_type) = "Slot", deprecated = true];
+    // The distance of when validator submitted and got included in the chain, the distance
+    // is mapped 1-to-1 with the request's public keys.
+    // Deprecated: This field can no longer be fetched from the state after the Altair hard fork.
+    repeated uint64 inclusion_distances = 3 [(photon.ext.cast_type) = "Slot", deprecated = true];
+    // Whether the list of validator recently correctly voted for source at previous epoch, the result
+    // is mapped 1-to-1 with the request's public keys.
+    repeated bool correctly_voted_source = 4;
+    // Whether the list of validator recently correctly voted for target at previous epoch, the result
+    // is mapped 1-to-1 with the request's public keys.
+    repeated bool correctly_voted_target = 5;
+    // Whether the list of validator recently correctly voted for head at previous epoch, the result
+    // is mapped 1-to-1 with the request's public keys.
+    repeated bool correctly_voted_head = 6;
+    // The balance of validators before epoch transition, the balance is mapped 1-to-1 with the requests'
+    // public keys.
+    repeated uint64 balances_before_epoch_transition = 7;
+    // The balance of validators after epoch transition, the balance is mapped 1-to-1 with the requests'
+    // public keys.
+    repeated uint64 balances_after_epoch_transition = 8;
+    // The total number of validators from the request not found in the chain.
+    repeated bytes missing_validators = 9;
+    // The average active validator balance in the chain.
+    float average_active_validator_balance = 10;
+    // The public keys in the order they are in of the response.
+    repeated bytes public_keys = 11 [(photon.ext.ssz_size) = "?,48"];
+    // The inactivity score of the validator tracks validator participation. [New in Altair]
+    repeated uint64 inactivity_scores = 12;
+}
+
+message ValidatorQueue {
+    // The amount of ether in gwei allowed to enter or exit the active
+    // validator set.
+    uint64 churn_limit = 1;
+
+    // Ordered list of 48 byte public keys awaiting activation. 0th index is the
+    // next key to be processed.
+    repeated bytes activation_public_keys = 2 [(photon.ext.ssz_size) = "?,48", deprecated = true];
+
+    // Ordered list of public keys awaiting exit. 0th index is the next key to
+    // be processed.
+    repeated bytes exit_public_keys = 3 [(photon.ext.ssz_size) = "?,48", deprecated = true];
+
+    // Ordered list of validator indices awaiting activation. 0th item in the list is the
+    // next validator index to be processed.
+    repeated uint64 activation_validator_indices = 4 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // Ordered list of validator indices awaiting exit. 0th item in the list is the
+    // next validator index to be processed.
+    repeated uint64 exit_validator_indices = 5 [(photon.ext.cast_type) = "ValidatorIndex"];
+}
+
+message ListValidatorAssignmentsRequest {
+    oneof query_filter {
+        // Epoch to validator assignments for.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Whether or not to query for the genesis information.
+        bool genesis = 2;
+    }
+    // 48 byte validator public keys to filter assignments for the given epoch.
+    repeated bytes public_keys = 3 [(photon.ext.ssz_size) = "?,48"];
+    // Validator indicies to filter assignments for the given epoch.
+    repeated uint64 indices = 4 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+    // The maximum number of ValidatorAssignments to return in the response.
+    // This field is optional.
+    int32 page_size = 5;
+
+    // A pagination token returned from a previous call to `ListValidatorAssignments`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 6;
+}
+
+message ValidatorAssignments {
+    message CommitteeAssignment {
+        // Committees are responsible for crosslinking committee data back to the chain,
+        // they also attest and produce chain blocks. This is a list of validator indices that
+        // are in the same committee as requested validator, everyone in the committee is assigned to the
+        // same slot and same committee.
+        repeated uint64 committee = 1 [(photon.ext.cast_type) = "ValidatorIndex"];
+
+        // Committee index represents the committee of validator that's in.
+        uint64 committee_index = 2  [(photon.ext.cast_type) = "CommitteeIndex"];
+
+        // Chain slot in which the validator must perform its assigned
+        // duty as an attester.
+        uint64 attester_slot = 3 [(photon.ext.cast_type) = "Slot"];
+
+        // Chain slots in which the validator must perform its assigned
+        // duty as a proposer.
+        repeated uint64 proposer_slots = 4 [(photon.ext.cast_type) = "Slot"];
+
+        // 48 byte BLS public key.
+        bytes public_key = 5 [(photon.ext.ssz_size) = "48", deprecated = true];
+
+        // Validator index in the state.
+        uint64 validator_index = 6 [(photon.ext.cast_type) = "ValidatorIndex"];
+    }
+
+    // The epoch for which this set of validator assignments is valid.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+    repeated CommitteeAssignment assignments = 2;
+
+    // A pagination token returned from a previous call to `ListValidatorAssignmentsRequest`
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string next_page_token = 3;
+
+    // Total count of CommitteeAssignments matching the request filter.
+    int32 total_size = 4;
+}
+
+message GetValidatorParticipationRequest {
+    oneof query_filter {
+        // Epoch to request participation information.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+        // Whether or not to query for the genesis information.
+        bool genesis = 2;
+    }
+}
+
+message ValidatorParticipationResponse {
+    // Epoch which this message is applicable.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+
+    // Whether or not epoch has been finalized.
+    bool finalized = 2;
+
+    // The actual validator participation metrics.
+    ValidatorParticipation participation = 3;
+}
+
+message AttestationPoolRequest {
+    // The maximum number of objects to return in the response.
+    // This field is optional.
+    int32 page_size = 1;
+
+    // A pagination token returned from a previous call
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string page_token = 2;
+}
+
+message AttestationPoolResponse {
+    // List of attestations currently in the pool of the chain.
+    repeated Attestation attestations = 1;
+
+    // A pagination token returned from a previous call
+    // that indicates where this listing should continue from.
+    // This field is optional.
+    string next_page_token = 2;
+
+    // Total count of objects matching the request filter.
+    int32 total_size = 3;
+}
+
+// Information about the configuration parameters of the node, such
+// as the slots per epoch, slots per eth1 voting period, and more.
+message ChainConfig {
+    map<string, string> config = 1;
+}
+
+message AccountRequest {
+    bytes address = 1;
+}
+
+message SubmitSlashingResponse {
+    // Indices of the validators to be slashed by the submitted
+    // proposer/attester slashing object.
+    repeated uint64 slashed_indices = 1 [(photon.ext.cast_type) = "ValidatorIndex"];
+}
+
+message IndividualVotesRequest {
+    // Epoch of the request.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+    // Validator 48 byte BLS public keys to filter validators for the given epoch.
+    repeated bytes public_keys = 2;
+    // Validator indices to filter validators for the given epoch.
+    repeated uint64 indices = 3 [(photon.ext.cast_type) = "ValidatorIndex"];
+}
+
+message IndividualVotesRespond {
+    message IndividualVote {
+        // The epoch of the vote status request.
+        uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+        // The public key of the vote status request.
+        bytes public_key = 2;
+        // The validator index of the request.
+        uint64 validator_index = 3 [(photon.ext.cast_type) = "ValidatorIndex"];
+        // Has the validator been slashed.
+        bool is_slashed = 4;
+        // Is the validator withdrawable.
+        bool is_withdrawable_in_current_epoch = 5;
+        // Is the validator active in current epoch.
+        bool is_active_in_current_epoch = 6;
+        // Was the validator active in previous epoch.
+        bool is_active_in_previous_epoch = 7;
+        // Did validator attest for current epoch.
+        bool is_current_epoch_attester = 8;
+        // Did validator attest target for current epoch.
+        bool is_current_epoch_target_attester = 9;
+        // Did validator attest for previous epoch.
+        bool is_previous_epoch_attester = 10;
+        // Did validator attest target for previous epoch.
+        bool is_previous_epoch_target_attester = 11;
+        // Did validator attest head for previous epoch.
+        bool is_previous_epoch_head_attester = 12;
+        // The current effective balance of the validator.
+        uint64 current_epoch_effective_balance_gwei = 13;
+        // The slots of when the validator's attestation got included in the block. Only available in phase0.
+        uint64 inclusion_slot = 14 [(photon.ext.cast_type) = "Slot", deprecated = true];
+        // How many slots have passed until the validator's attestation got included in the block. Only available in phase0.
+        uint64 inclusion_distance = 15 [(photon.ext.cast_type) = "Slot", deprecated = true];
+        // The inactivity score of the validator tracks validator participation. [New in Altair]
+        uint64 inactivity_score = 16;
+    }
+
+    repeated IndividualVote individual_votes = 1;
+}
+
+message WeakSubjectivityCheckpoint {
+    // The block root of weak subjectivity checkpoint.
+    bytes block_root = 1;
+    // The state root of weak subjectivity checkpoint.
+    bytes state_root = 2;
+    // The epoch of weak subjectivity checkpoint.
+    uint64 epoch = 3 [(photon.ext.cast_type) = "Epoch"];
+}
+
+
+message StreamFinalizedEpochRequest {
+    // A list of tx types to filter txs.
+    repeated uint32 tx_types = 1;
+    // A list of storage event types to filter events.
+    repeated uint32 storage_event_types = 2;
+    // A list of 48 byte relevant public keys to filter txs and events.
+    repeated bytes public_keys = 3 [(photon.ext.ssz_size) = "?,48"];
+}
+
+message FinalizedEpochRequest {
+    // Epoch to query.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+    // A list of tx types to filter txs.
+    repeated uint32 tx_types = 2;
+    // A list of storage event types to filter events.
+    repeated uint32 storage_event_types = 3;
+    // A list of 48 byte relevant public keys to filter txs and events.
+    repeated bytes public_keys = 4 [(photon.ext.ssz_size) = "?,48"];
+}
+
+message FinalizedBlock {
+    uint64 Slot = 1 [(photon.ext.cast_type) = "Slot"];
+    // FinalizedTxs within the slot.
+    repeated SignedTransaction txs = 2;
+}
+
+message FinalizedEpochResponse {
+    // Epoch of the update.
+    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
+    // FinalizedBlocks within the epoch.
+    repeated FinalizedBlock blocks = 2;
+    // StorageEvents within the epoch.
+    repeated StorageEvent storage_events = 3;
+}
