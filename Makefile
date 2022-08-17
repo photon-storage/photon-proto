@@ -12,6 +12,7 @@ env:
 pb: clean
 	./scripts/update_proto.sh
 	./scripts/update_mockgen.sh
+	go test -v ./...
 
 clean:
 	find . \( -name "*.pb.go" -o -name "*.pb.gw.go" \) -not -path "./.env/*" -delete

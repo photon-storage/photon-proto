@@ -532,7 +532,8 @@ func genTx() *Transaction {
 			Amount: 200,
 		},
 		TxDataAuditorDeposit: &TxDataAuditorDeposit{
-			Amount: 300,
+			Amount:  300,
+			Decoder: bytesN(512),
 		},
 		TxDataObjectCommit: &TxDataObjectCommit{
 			Owner:            bytesN(48),
