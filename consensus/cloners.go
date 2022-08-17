@@ -167,7 +167,8 @@ func CopyTx(tx *Transaction) *Transaction {
 	var ad *TxDataAuditorDeposit
 	if tx.TxDataAuditorDeposit != nil {
 		ad = &TxDataAuditorDeposit{
-			Amount: tx.TxDataAuditorDeposit.Amount,
+			Amount:  tx.TxDataAuditorDeposit.Amount,
+			Decoder: tx.TxDataAuditorDeposit.Decoder,
 		}
 	}
 

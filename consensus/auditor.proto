@@ -33,6 +33,10 @@ message Auditor {
     // Epoch when the auditor is eligible to withdraw their funds. This field
     // is FAR_FUTURE_EPOCH if the auditor has not exited.
     uint64 withdrawable_epoch = 6 [(photon.ext.cast_type) = "Epoch"];
+
+    // Decoder is a public key encoded in multikey format for decoding data
+    // encoded by this auditor.
+    bytes decoder = 7 [(photon.ext.ssz_size) = "512"];
 }
 
 enum AuditorStatus {

@@ -86,6 +86,9 @@ message TxDataValidatorDeposit {
 message TxDataAuditorDeposit {
     // Amount of deposit.
     uint64 amount = 1;
+    // Decoder is a public key encoded in multikey format for decoding data
+    // encoded by this auditor.
+    bytes decoder = 2 [(photon.ext.ssz_size) = "512"];
 }
 
 // TxDataObjectCommit is an object's storage contract for its initial commit.
