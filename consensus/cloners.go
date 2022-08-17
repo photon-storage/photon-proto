@@ -180,6 +180,9 @@ func CopyTx(tx *Transaction) *Transaction {
 			DepotDiscoveryId: safeCopyBytes(tx.TxDataObjectCommit.DepotDiscoveryId),
 			Hash:             safeCopyBytes(tx.TxDataObjectCommit.Hash),
 			Size:             tx.TxDataObjectCommit.Size,
+			EncodedHash:      safeCopyBytes(tx.TxDataObjectCommit.EncodedHash),
+			EncodedSize:      tx.TxDataObjectCommit.EncodedSize,
+			NumBlocks:        tx.TxDataObjectCommit.NumBlocks,
 			Duration:         tx.TxDataObjectCommit.Duration,
 			Fee:              tx.TxDataObjectCommit.Fee,
 			Bond:             tx.TxDataObjectCommit.Bond,
@@ -194,16 +197,15 @@ func CopyTx(tx *Transaction) *Transaction {
 			rands = append(rands, safeCopyBytes(v))
 		}
 		oa = &TxDataObjectAudit{
-			CommitTxHash:    safeCopyBytes(tx.TxDataObjectAudit.CommitTxHash),
-			Auditor:         safeCopyBytes(tx.TxDataObjectAudit.Auditor),
-			Depot:           safeCopyBytes(tx.TxDataObjectAudit.Depot),
-			Hash:            safeCopyBytes(tx.TxDataObjectAudit.Hash),
-			Size:            tx.TxDataObjectAudit.Size,
-			EncodedHash:     safeCopyBytes(tx.TxDataObjectAudit.EncodedHash),
-			EncodedSize:     tx.TxDataObjectAudit.EncodedSize,
-			NumBlocks:       tx.TxDataObjectAudit.NumBlocks,
-			SectorsPerBlock: tx.TxDataObjectAudit.SectorsPerBlock,
-			Rands:           rands,
+			CommitTxHash: safeCopyBytes(tx.TxDataObjectAudit.CommitTxHash),
+			Auditor:      safeCopyBytes(tx.TxDataObjectAudit.Auditor),
+			Depot:        safeCopyBytes(tx.TxDataObjectAudit.Depot),
+			Hash:         safeCopyBytes(tx.TxDataObjectAudit.Hash),
+			Size:         tx.TxDataObjectAudit.Size,
+			EncodedHash:  safeCopyBytes(tx.TxDataObjectAudit.EncodedHash),
+			EncodedSize:  tx.TxDataObjectAudit.EncodedSize,
+			NumBlocks:    tx.TxDataObjectAudit.NumBlocks,
+			Rands:        rands,
 		}
 	}
 

@@ -95,45 +95,42 @@ message ObjectStatusResponse {
     ObjectStatus status = 1;
     // Object's owner's publick key.
     bytes owner = 2;
+    // Object's auditor's publick key.
+    bytes auditor = 3;
     // The original object commit tx hash.
-    bytes commit_tx_hash = 3;
+    bytes commit_tx_hash = 4;
+    // Object decoder defines how to decode object data.
+    bytes decoder = 5;
     // The Merkle tree root hash of the original data.
-    bytes hash = 4;
+    bytes hash = 6;
     // Encoded object data hash.
-    bytes encoded_hash = 5;
+    bytes encoded_hash = 7;
     // Original data size.
-    uint64 size = 6;
+    uint64 size = 8;
     // Encoded data size.
-    uint64 encoded_size = 7;
+    uint64 encoded_size = 9;
     // Total number of blocks for the object.
-    uint32 num_blocks = 8;
+    uint32 num_blocks = 10;
     // Number of sectors per block.
-    uint32 sectors_per_block = 9;
+    uint32 sectors_per_block = 11;
     // Number of sectors per block.
-    uint32 blocks_per_chunk = 10;
+    uint32 blocks_per_chunk = 12;
     // Total number of chunks for the objet.
-    uint32 num_chunks = 11;
+    uint32 num_chunks = 13;
     // BitSet of chunks indicates availability in the Depot.
     // Only valid for an active upload.
-    BitSet received = 12;
+    BitSet received = 14;
 }
 
 message UploadInitRequest {
-    // Proposed OBJECT_COMMIT transaction which contains storage contract
-    // details.
+    // Proposed OBJECT_COMMIT/OBJECT_AUDIT transaction which contains storage
+    // contract details.
     photon.consensus.SignedTransaction signed_tx = 1;
-    // Tx signature signed by the TxDataObjectCommit.owner or TxDataObjectAudit.auditor.
+    // Tx signature signed by the TxDataObjectCommit.owner or
+    // TxDataObjectAudit.auditor.
     bytes initiator_signature = 2;
     // Tx signature signed by the Transaction.from.
     bytes from_signature = 3;
-    // Total number of blocks for this upload. It can derive number of chunks,
-    // which determine the way merkle root hash of the objec is calculated.
-    // The root hash is recorded in the above transaction.
-    uint32 num_blocks = 4;
-    // Fixed number of sectors for each block.
-    uint32 sectors_per_block = 5;
-    // Fixed number of blocks for each chunk.
-    uint32 blocks_per_chunk = 6;
 }
 
 message UploadInitResponse {

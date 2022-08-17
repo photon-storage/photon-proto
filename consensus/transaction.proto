@@ -108,17 +108,26 @@ message TxDataObjectCommit {
     // The size of the object's original data to be stored.
     uint64 size = 5;
 
+     // The Merkle tree root hash of the object's newly encoded data.
+    bytes encoded_hash = 6 [(photon.ext.ssz_size) = "32"];
+
+    // The size of the object's encoded data to be stored.
+    uint64 encoded_size = 7;
+
+    // Number of blocks of encoded data.
+    uint32 num_blocks = 8;
+
     // Number of slots that the storage provider needs to maintain the data.
-    uint64 duration = 6 [(photon.ext.cast_type) = "Slot"];
+    uint64 duration = 9 [(photon.ext.cast_type) = "Slot"];
 
     // Total storage fee that data owner paid.
-    uint64 fee = 7;
+    uint64 fee = 10;
 
     // Storage providers collateral deposit.
-    uint64 bond = 8;
+    uint64 bond = 11;
 
     // Slot deadline before which the transaction is considered valid.
-    uint64 deadline = 9 [(photon.ext.cast_type) = "Slot"];
+    uint64 deadline = 12 [(photon.ext.cast_type) = "Slot"];
 }
 
 // TxDataObjectAudit is an update to object's storage contract after
@@ -148,14 +157,11 @@ message TxDataObjectAudit {
     // Number of blocks of encoded data.
     uint32 num_blocks = 8;
 
-    // Number of sectors for each block for genearting PoR sigmas.
-    uint32 sectors_per_block = 9;
-
     // An array of random elements used to generated block signature.
     // The count is equal to sectors_per_block.
     // TODO(kmax): using fixed length because ssz_max would not
     // allow nil point check and skip ssz calculation.
-    repeated bytes rands = 10 [(photon.ext.ssz_size) = "8,96"];
+    repeated bytes rands = 9 [(photon.ext.ssz_size) = "8,96"];
 }
 
 // TxDataObjectPoR is an update to object's storage contract with PoR
