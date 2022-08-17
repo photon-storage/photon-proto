@@ -86,14 +86,11 @@ message Audit {
     // Number of blocks of encoded data.
     uint32 num_blocks = 3;
 
-    // Number of sectors for each block for genearting PoR sigmas.
-    uint32 sectors_per_block = 4;
-
     // NOTE(kmax): hash of block signatures?
 
     // An array of random elements used to generated block signature.
     // The count is equal to sectors_per_block.
-    repeated bytes rands = 5 [(photon.ext.ssz_max) = "64,96"];
+    repeated bytes rands = 4 [(photon.ext.ssz_max) = "64,96"];
 }
 
 message Challenge {

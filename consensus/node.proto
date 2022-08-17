@@ -396,6 +396,13 @@ service Node {
         };
     }
 
+    // Retrieve information about a specific auditor in the registry.
+    rpc GetAuditor(GetAuditorRequest) returns (Auditor) {
+        option (google.api.http) = {
+            get: "/node/auditor"
+        };
+    }
+
     // AuditorStatus returns a auditor's status based on the current epoch.
     //
     // The status response can be one of the following:
@@ -1014,6 +1021,11 @@ message ValidatorParticipationResponse {
 
     // The actual validator participation metrics.
     ValidatorParticipation participation = 3;
+}
+
+message GetAuditorRequest {
+    // 48 byte auditor public key.
+    bytes public_key = 2 [(photon.ext.ssz_size) = "48"];
 }
 
 message AttestationPoolRequest {
