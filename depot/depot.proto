@@ -117,9 +117,11 @@ message ObjectStatusResponse {
     uint32 blocks_per_chunk = 12;
     // Total number of chunks for the objet.
     uint32 num_chunks = 13;
+    // optional IPFS CID if published.
+    bytes cid = 14;
     // BitSet of chunks indicates availability in the Depot.
     // Only valid for an active upload.
-    BitSet received = 14;
+    BitSet received = 15;
 }
 
 message UploadInitRequest {
