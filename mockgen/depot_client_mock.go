@@ -11,6 +11,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	pbd "github.com/photon-storage/photon-proto/depot"
 	grpc "google.golang.org/grpc"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 )
 
 // MockDepotClient is a mock of DepotClient interface.
@@ -74,6 +75,26 @@ func (mr *MockDepotClientMockRecorder) ObjectStatus(arg0, arg1 interface{}, arg2
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ObjectStatus", reflect.TypeOf((*MockDepotClient)(nil).ObjectStatus), varargs...)
+}
+
+// State mocks base method.
+func (m *MockDepotClient) State(arg0 context.Context, arg1 *emptypb.Empty, arg2 ...grpc.CallOption) (*pbd.StateResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "State", varargs...)
+	ret0, _ := ret[0].(*pbd.StateResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// State indicates an expected call of State.
+func (mr *MockDepotClientMockRecorder) State(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "State", reflect.TypeOf((*MockDepotClient)(nil).State), varargs...)
 }
 
 // UploadChunk mocks base method.

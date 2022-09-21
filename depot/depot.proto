@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package photon.depot;
 
+import "google/protobuf/empty.proto";
 import "google/api/annotations.proto";
 
 import "consensus/transaction.proto";
@@ -19,7 +20,17 @@ option php_namespace = "photon\\proto\\depot";
 //
 // Depot service provides an interface for storing and retrieving data objects.
 service Depot {
-    // Inquires for object status.
+    // Inquery for depot state.
+    //
+    // The API is used for client to fetch depot state such as public key,
+    // discovery ID, etc, which are needed for sealing the transaction.
+    rpc State(google.protobuf.Empty) returns (StateResponse) {
+        option (google.api.http) = {
+            get : "/photon/depot/state",
+        };
+    }
+
+    // Inquiry for object status.
     //
     // The API is used for client to synchronize with Depot on the latest
     // object status. It can be used to synchronize progress when resuming
@@ -62,6 +73,13 @@ service Depot {
             get : "/photon/depot/download_chunk",
         };
     }
+}
+
+message StateResponse {
+    // Depot's publick key.
+    bytes public_key= 1;
+    // Depot's discovery ID on the P2P network.
+    bytes discovery_id = 2;
 }
 
 enum ObjectStatus {
