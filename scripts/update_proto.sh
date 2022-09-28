@@ -184,7 +184,7 @@ generate_gw() {
 }
 
 # generating gw for different packages
-PKG="consensus" GW_FILES="account.proto info.proto node.proto debug.proto finalized_block_root_container.proto health.proto slasher.proto validator.proto p2p_messages.proto attestation.proto block.proto state.proto transaction.proto account.proto" generate_gw
+PKG="consensus" GW_FILES="account.proto info.proto node.proto debug.proto finalized_block_root_container.proto slasher.proto validator.proto p2p_messages.proto attestation.proto block.proto state.proto transaction.proto account.proto" generate_gw
 PKG="consensus/validator-client" GW_FILES="web_api.proto" generate_gw
 PKG="depot" GW_FILES="depot.proto" generate_gw
 
