@@ -57,6 +57,26 @@ func (mr *MockDepotClientMockRecorder) DownloadChunk(arg0, arg1 interface{}, arg
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DownloadChunk", reflect.TypeOf((*MockDepotClient)(nil).DownloadChunk), varargs...)
 }
 
+// GetVersion mocks base method.
+func (m *MockDepotClient) GetVersion(arg0 context.Context, arg1 *emptypb.Empty, arg2 ...grpc.CallOption) (*pbd.VersionResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetVersion", varargs...)
+	ret0, _ := ret[0].(*pbd.VersionResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetVersion indicates an expected call of GetVersion.
+func (mr *MockDepotClientMockRecorder) GetVersion(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetVersion", reflect.TypeOf((*MockDepotClient)(nil).GetVersion), varargs...)
+}
+
 // ObjectStatus mocks base method.
 func (m *MockDepotClient) ObjectStatus(arg0 context.Context, arg1 *pbd.ObjectStatusRequest, arg2 ...grpc.CallOption) (*pbd.ObjectStatusResponse, error) {
 	m.ctrl.T.Helper()

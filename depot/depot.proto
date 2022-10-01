@@ -73,6 +73,13 @@ service Depot {
             get : "/photon/depot/download_chunk",
         };
     }
+
+    // Retrieve information about the running Depot server.
+    rpc GetVersion(google.protobuf.Empty) returns (VersionResponse) {
+        option (google.api.http) = {
+            get: "/photon/depot/version"
+        };
+    }
 }
 
 message StateResponse {
@@ -185,4 +192,10 @@ message DownloadChunkRequest{
 message DownloadChunkResponse{
     // Chunk data.
     photon.depot.Chunk chunk = 1;
+}
+
+// Information about the depot version.
+message VersionResponse {
+    // A string about the depot version.
+    string version = 1;
 }
