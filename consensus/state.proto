@@ -15,68 +15,58 @@ option php_namespace = "photon\\proto\\consensus";
 
 
 message State {
-  // Versioning [101-200]
-  uint64 genesis_time = 101;
-  bytes genesis_identifier = 102 [(photon.ext.ssz_size) = "32"];
-  uint64 slot = 103 [(photon.ext.cast_type) = "Slot"];
+    // Versioning [1-100]
+    uint64 genesis_time = 1;
+    bytes genesis_identifier = 2 [(photon.ext.ssz_size) = "32"];
+    uint64 slot = 3 [(photon.ext.cast_type) = "Slot"];
 
-  // Block [201-300]
-  BlockHeader latest_block_header = 201;
+    // Block [101-200]
+    BlockHeader latest_block_header = 101;
 
-  // Randomness [301-400]
-  repeated bytes randao_mixes = 301 [(photon.ext.ssz_max) = "65536,32"];
+    // Finality [201-300]
+    // Spec type [4]Bitvector which means this would be a fixed size of 4 bits.
+    bytes justification_bits = 201 [(photon.ext.ssz_size) = "1", (photon.ext.cast_type) = "github.com/prysmaticlabs/go-bitfield.Bitvector4"];
+    Checkpoint previous_justified_checkpoint = 202;
+    Checkpoint current_justified_checkpoint = 203;
+    Checkpoint finalized_checkpoint = 204;
 
-  // Slashings & Participation [401-500]
-  repeated uint64 slashings = 401 [(photon.ext.ssz_max) = "8192"];
+    // Validator participation & slashings [301-400]
+    repeated uint64 balances = 301 [(photon.ext.ssz_max) = "1099511627776"];
+    repeated uint64 inactivity_scores = 302 [(photon.ext.ssz_max) = "1099511627776"];
+    bytes previous_epoch_participation = 303 [(photon.ext.ssz_max) = "1099511627776"];
+    bytes current_epoch_participation = 304 [(photon.ext.ssz_max) = "1099511627776"];
+    repeated uint64 slashings = 305 [(photon.ext.ssz_max) = "8192"];
 
-  // Finality [501-600]
-  // Spec type [4]Bitvector which means this would be a fixed size of 4 bits.
-  bytes justification_bits = 501 [(photon.ext.ssz_size) = "1", (photon.ext.cast_type) = "github.com/prysmaticlabs/go-bitfield.Bitvector4"];
-  Checkpoint previous_justified_checkpoint = 502;
-  Checkpoint current_justified_checkpoint = 503;
-  Checkpoint finalized_checkpoint = 504;
+    // Trie roots [401-500]
+    // Account trie root hash.
+    bytes account_trie_root = 401 [(photon.ext.ssz_size) = "32"];
+    // Validator trie root hash.
+    bytes validator_trie_root = 402 [(photon.ext.ssz_size) = "32"];
+    // Auditor trie root hash.
+    bytes auditor_trie_root = 403 [(photon.ext.ssz_size) = "32"];
+    // Storage contract trie root hash.
+    bytes storage_trie_root = 404 [(photon.ext.ssz_size) = "32"];
+    // Storage contract audit queue's root hash.
+    bytes audit_queue_root = 405 [(photon.ext.ssz_size) = "32"];
+    // Storage contract event queue's root hash.
+    bytes event_queue_root = 406 [(photon.ext.ssz_size) = "32"];
 
-  // Account related [601-700]
-  repeated uint64 balances = 601 [(photon.ext.ssz_max) = "1099511627776"];
-  repeated uint64 inactivity_scores = 602 [(photon.ext.ssz_max) = "1099511627776"];
-  bytes previous_epoch_participation = 603 [(photon.ext.ssz_max) = "1099511627776"];
-  bytes current_epoch_participation = 604 [(photon.ext.ssz_max) = "1099511627776"];
-  // Accounts' trie root hash.
-  bytes account_root = 605 [(photon.ext.ssz_size) = "32"];
-  // Validators' trie root hash.
-  bytes validator_root = 606 [(photon.ext.ssz_size) = "32"];
-  // Auditors' trie root hash.
-  bytes auditor_root = 607 [(photon.ext.ssz_size) = "32"];
-  // Storage contracts' trie root hash.
-  bytes storage_root = 608 [(photon.ext.ssz_size) = "32"];
-  // Storage contract audit queue's root hash.
-  bytes audit_queue_root = 609 [(photon.ext.ssz_size) = "32"];
-  // Storage contract event queue's root hash.
-  bytes event_queue_root = 610 [(photon.ext.ssz_size) = "32"];
+    // Aggregated state [501-600]
+    uint64 reservior_balance = 501;
+    Storage storage = 502;
 
-  // Storage [701-800]
-  Storage storage = 701;
-}
-
-message PendingAttestation {
-  // Bitfield representation of validator indices that have voted exactly
-  // the same vote and have been aggregated into this attestation.
-  bytes aggregation_bits = 1 [(photon.ext.ssz_max) = "2048", (photon.ext.cast_type) = "github.com/prysmaticlabs/go-bitfield.Bitlist"];
-  AttestationData data = 2;
-  // The difference of when attestation gets created and get included on chain.
-  uint64 inclusion_delay = 3 [(photon.ext.cast_type) = "Slot"];
-  // The proposer who included the attestation in the block.
-  uint64 proposer_index = 4 [(photon.ext.cast_type) = "ValidatorIndex"];
+    // Randomness [601-700]
+    repeated bytes randao_mixes = 601 [(photon.ext.ssz_max) = "65536,32"];
 }
 
 // Metadata for all active storage contracts.
 message Storage {
-  // Number of active storage contracts.
-  uint64 num_contracts = 1;
-  // Total storage capacity size registered by storage contracts in bytes.
-  // The integer value is serialized in big endian format.
-  // This tracks the object's original size instead of the encoded size.
-  bytes total_size = 2 [(photon.ext.ssz_max) = "32"];
-  // Reward per byte at current slot to tracking storage contract's reward.
-  uint64 reward_per_byte = 3;
+    // Number of active storage contracts.
+    uint64 num_contracts = 1;
+    // Total storage capacity size registered by storage contracts in bytes.
+    // The integer value is serialized in big endian format.
+    // This tracks the object's original size instead of the encoded size.
+    bytes total_size = 2 [(photon.ext.ssz_max) = "32"];
+    // Reward per byte at current slot to tracking storage contract's reward.
+    uint64 reward_per_byte = 3;
 }

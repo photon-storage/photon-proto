@@ -6,6 +6,8 @@ import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
 
 import "ext/options.proto";
+import "consensus/state.proto";
+import "consensus/block.proto";
 import "consensus/info.proto";
 import "consensus/p2p_messages.proto";
 
@@ -24,13 +26,13 @@ option php_namespace = "photon\\proto\\consensus";
 // by block root or state root from the node directly.
 service Debug {
     // Returns a state by filter criteria from the node.
-    rpc GetStateSSZ(StateRequest) returns (SSZResponse) {
+    rpc GetState(StateRequest) returns (State) {
         option (google.api.http) = {
             get: "/eth/v1alpha1/debug/state"
         };
     }
     // Returns a state by filter criteria from the node.
-    rpc GetBlockSSZ(BlockRequestByRoot) returns (SSZResponse) {
+    rpc GetBlock(BlockRequestByRoot) returns (Block) {
         option (google.api.http) = {
             get: "/eth/v1alpha1/debug/block"
         };
@@ -88,11 +90,6 @@ message StateRequest {
 
 message BlockRequestByRoot {
     bytes block_root = 1;
-}
-
-message SSZResponse {
-    // Returns an ssz-encoded byte slice as a response.
-    bytes encoded = 1;
 }
 
 message LoggingLevelRequest {
