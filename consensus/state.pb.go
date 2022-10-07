@@ -40,7 +40,7 @@ type State struct {
 	PreviousJustifiedCheckpoint *Checkpoint                                     `protobuf:"bytes,202,opt,name=previous_justified_checkpoint,json=previousJustifiedCheckpoint,proto3" json:"previous_justified_checkpoint,omitempty"`
 	CurrentJustifiedCheckpoint  *Checkpoint                                     `protobuf:"bytes,203,opt,name=current_justified_checkpoint,json=currentJustifiedCheckpoint,proto3" json:"current_justified_checkpoint,omitempty"`
 	FinalizedCheckpoint         *Checkpoint                                     `protobuf:"bytes,204,opt,name=finalized_checkpoint,json=finalizedCheckpoint,proto3" json:"finalized_checkpoint,omitempty"`
-	// Validator Participation & slashings [301-400]
+	// Validator participation & slashings [301-400]
 	Balances                   []uint64 `protobuf:"varint,301,rep,packed,name=balances,proto3" json:"balances,omitempty" ssz-max:"1099511627776"`
 	InactivityScores           []uint64 `protobuf:"varint,302,rep,packed,name=inactivity_scores,json=inactivityScores,proto3" json:"inactivity_scores,omitempty" ssz-max:"1099511627776"`
 	PreviousEpochParticipation []byte   `protobuf:"bytes,303,opt,name=previous_epoch_participation,json=previousEpochParticipation,proto3" json:"previous_epoch_participation,omitempty" ssz-max:"1099511627776"`
