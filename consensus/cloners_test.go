@@ -94,33 +94,6 @@ func notEmptyImpl(
 	}
 }
 
-func TestCopyPendingAttestation(t *testing.T) {
-	pa := &PendingAttestation{
-		AggregationBits: bytes(),
-		Data: &AttestationData{
-			Slot:            1,
-			CommitteeIndex:  2,
-			BeaconBlockRoot: bytes(),
-			Source: &Checkpoint{
-				Epoch: 1,
-				Root:  bytes(),
-			},
-			Target: &Checkpoint{
-				Epoch: 1,
-				Root:  bytes(),
-			},
-		},
-		InclusionDelay: 3,
-		ProposerIndex:  5,
-	}
-
-	got := CopyPendingAttestation(pa)
-	if !reflect.DeepEqual(got, pa) {
-		t.Errorf("CopyPendingAttestation() = %v, want %v", got, pa)
-	}
-	notEmpty(t, got, "Copied pending attestation has empty fields")
-}
-
 func TestCopyAttestation(t *testing.T) {
 	att := &Attestation{
 		AggregationBits: bytes(),
@@ -409,70 +382,6 @@ func TestCopyValidator(t *testing.T) {
 		t.Errorf("CopyValidator() = %v, want %v", got, v)
 	}
 	notEmpty(t, got, "Copied validator has empty fields")
-}
-
-func TestCopyPendingAttestationSlice(t *testing.T) {
-	tests := []struct {
-		name  string
-		input []*PendingAttestation
-	}{
-		{
-			name:  "nil",
-			input: nil,
-		},
-		{
-			name:  "empty",
-			input: []*PendingAttestation{},
-		},
-		{
-			name: "correct copy",
-			input: []*PendingAttestation{
-				{
-					AggregationBits: bytes(),
-					Data: &AttestationData{
-						Slot:            1,
-						CommitteeIndex:  2,
-						BeaconBlockRoot: bytes(),
-						Source: &Checkpoint{
-							Epoch: 1,
-							Root:  bytes(),
-						},
-						Target: &Checkpoint{
-							Epoch: 1,
-							Root:  bytes(),
-						},
-					},
-					InclusionDelay: 3,
-					ProposerIndex:  5,
-				},
-				{
-					AggregationBits: bytes(),
-					Data: &AttestationData{
-						Slot:            1,
-						CommitteeIndex:  2,
-						BeaconBlockRoot: bytes(),
-						Source: &Checkpoint{
-							Epoch: 1,
-							Root:  bytes(),
-						},
-						Target: &Checkpoint{
-							Epoch: 1,
-							Root:  bytes(),
-						},
-					},
-					InclusionDelay: 3,
-					ProposerIndex:  5,
-				},
-			},
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := CopyPendingAttestationSlice(tt.input); !reflect.DeepEqual(got, tt.input) {
-				t.Errorf("CopyPendingAttestationSlice() = %v, want %v", got, tt.input)
-			}
-		})
-	}
 }
 
 func bytes() []byte {
