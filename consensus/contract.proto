@@ -91,6 +91,9 @@ message Audit {
     // An array of random elements used to generated block signature.
     // The count is equal to sectors_per_block.
     repeated bytes rands = 4 [(photon.ext.ssz_max) = "64,96"];
+
+    // Audit complete slot.
+    uint64 completed_slot = 5 [(photon.ext.cast_type) = "Slot"];
 }
 
 message Challenge {
