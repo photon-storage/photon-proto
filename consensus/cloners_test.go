@@ -455,7 +455,7 @@ func genTx() *Transaction {
 			NumBlocks:        4,
 			Duration:         10000,
 			Fee:              5000000000,
-			Bond:             1000000000,
+			Pledge:           1000000000,
 			Deadline:         2000000000,
 		},
 		TxDataObjectAudit: &TxDataObjectAudit{

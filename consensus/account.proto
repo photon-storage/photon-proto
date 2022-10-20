@@ -4,6 +4,8 @@ package photon.consensus;
 
 import "ext/options.proto";
 
+import "consensus/state.proto";
+
 option csharp_namespace = "photon.proto.consensus";
 option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
 option java_multiple_files = true;
@@ -13,8 +15,10 @@ option php_namespace = "photon\\proto\\consensus";
 
 message Account {
     bytes public_key = 1 [(photon.ext.ssz_size) = "48"];
-    // Latest account nonce
+    // Latest account nonce.
     uint64 nonce = 2;
-    // Account balance
+    // Account balance.
     uint64 balance = 3;
+    // Storage stats.
+    Storage storage = 4;
 }

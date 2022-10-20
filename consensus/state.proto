@@ -67,6 +67,7 @@ message Storage {
     // The integer value is serialized in big endian format.
     // This tracks the object's original size instead of the encoded size.
     bytes total_size = 2 [(photon.ext.ssz_max) = "32"];
-    // Reward per byte at current slot to tracking storage contract's reward.
-    uint64 reward_per_byte = 3;
+    // Accumulated reward rate at current slot used for tracking storage
+    // contract's reward.
+    uint64 reward_rate = 3;
 }

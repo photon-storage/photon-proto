@@ -56,7 +56,7 @@ message StorageContract {
     uint64 fee = 9;
 
     // Storage providers collateral deposit.
-    uint64 bond = 10;
+    uint64 pledge = 10;
 
     // Status defines status of contract. Equivalent to StorageStatus. Use
     // uint32 because SSZ does not support proto enum type.
