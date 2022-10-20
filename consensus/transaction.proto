@@ -124,7 +124,7 @@ message TxDataObjectCommit {
     uint64 fee = 10;
 
     // Storage providers collateral deposit.
-    uint64 bond = 11;
+    uint64 pledge = 11;
 
     // Slot deadline before which the transaction is considered valid.
     uint64 deadline = 12 [(photon.ext.cast_type) = "Slot"];

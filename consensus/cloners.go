@@ -158,7 +158,7 @@ func CopyTx(tx *Transaction) *Transaction {
 			NumBlocks:        tx.TxDataObjectCommit.NumBlocks,
 			Duration:         tx.TxDataObjectCommit.Duration,
 			Fee:              tx.TxDataObjectCommit.Fee,
-			Bond:             tx.TxDataObjectCommit.Bond,
+			Pledge:           tx.TxDataObjectCommit.Pledge,
 			Deadline:         tx.TxDataObjectCommit.Deadline,
 		}
 	}
