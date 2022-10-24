@@ -29,8 +29,10 @@ enum TxType {
     OBJECT_COMMIT = 6;
     // OBJECT_AUDIT updates a storage contract after object data audit completion.
     OBJECT_AUDIT = 7;
+    // OBJECT_CHALLENGE requests a PoR proof for a specified object.
+    OBJECT_CHALLENGE = 8;
     // OBJECT_POR updates a storage contract with PoR proof data.
-    OBJECT_POR = 8;
+    OBJECT_POR = 9;
 }
 
 message Transaction {
@@ -64,7 +66,8 @@ message Transaction {
     TxDataAuditorDeposit txDataAuditorDeposit = 104;
     TxDataObjectCommit txDataObjectCommit = 106;
     TxDataObjectAudit txDataObjectAudit = 107;
-    TxDataObjectPoR txDataObjectPoR = 108;
+    TxDataObjectChallenge txDataObjectChallenge = 108;
+    TxDataObjectPoR txDataObjectPoR = 109;
 }
 
 // Balance transfer transaction data.
@@ -162,6 +165,13 @@ message TxDataObjectAudit {
     // TODO(kmax): using fixed length because ssz_max would not
     // allow nil point check and skip ssz calculation.
     repeated bytes rands = 9 [(photon.ext.ssz_size) = "8,96"];
+}
+
+// TxDataObjectChallenge requests a PoR proof for an object specified by
+// the commit tx hash.
+message TxDataObjectChallenge {
+    // The original object commit tx hash for identification.
+    bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
 }
 
 // TxDataObjectPoR is an update to object's storage contract with PoR

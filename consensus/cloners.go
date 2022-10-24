@@ -182,6 +182,13 @@ func CopyTx(tx *Transaction) *Transaction {
 		}
 	}
 
+	var och *TxDataObjectChallenge
+	if tx.TxDataObjectChallenge != nil {
+		och = &TxDataObjectChallenge{
+			CommitTxHash: safeCopyBytes(tx.TxDataObjectChallenge.CommitTxHash),
+		}
+	}
+
 	var op *TxDataObjectPoR
 	if tx.TxDataObjectPoR != nil {
 		var aggs [][]byte
@@ -208,6 +215,7 @@ func CopyTx(tx *Transaction) *Transaction {
 		TxDataAuditorDeposit:   ad,
 		TxDataObjectCommit:     oc,
 		TxDataObjectAudit:      oa,
+		TxDataObjectChallenge:  och,
 		TxDataObjectPoR:        op,
 	}
 }
