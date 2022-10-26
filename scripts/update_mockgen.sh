@@ -44,8 +44,8 @@ fi
 
 MOCK_PATH="${REPO}/mockgen"
 MOCKS=(
-      "consensus ${MOCK_PATH}/node_server_mock.go Node_StreamChainHeadServer,Node_StreamAttestationsServer,Node_StreamBlocksServer,Node_StreamValidatorsInfoServer,Node_StreamIndexedAttestationsServer,Node_WaitForActivationServer,Node_WaitForChainStartServer,Node_StreamDutiesServer,Node_StreamFinalizedEpochServer"
-      "consensus ${MOCK_PATH}/node_client_mock.go NodeClient,Node_StreamChainHeadClient,Node_StreamAttestationsClient,Node_StreamBlocksClient,Node_StreamValidatorsInfoClient,Node_StreamIndexedAttestationsClient,Node_WaitForChainStartClient,Node_WaitForActivationClient,Node_StreamDutiesClient,Node_StreamFinalizedEpochClient"
+      "consensus ${MOCK_PATH}/node_server_mock.go Node_StreamChainHeadServer,Node_StreamAttestationsServer,Node_StreamBlocksServer,Node_StreamValidatorsInfoServer,Node_StreamIndexedAttestationsServer,Node_WaitForActivationServer,Node_WaitForChainStartServer,Node_StreamDutiesServer"
+      "consensus ${MOCK_PATH}/node_client_mock.go NodeClient,Node_StreamChainHeadClient,Node_StreamAttestationsClient,Node_StreamBlocksClient,Node_StreamValidatorsInfoClient,Node_StreamIndexedAttestationsClient,Node_WaitForChainStartClient,Node_WaitForActivationClient,Node_StreamDutiesClient"
       "consensus ${MOCK_PATH}/slasher_client_mock.go SlasherClient"
       "consensus ${MOCK_PATH}/info_service_mock.go InfoClient"
       "depot ${MOCK_PATH}/depot_client_mock.go DepotClient"

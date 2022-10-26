@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package photon.consensus;
+
+import "ext/options.proto";
+
+option csharp_namespace = "photon.proto.consensus";
+option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
+option java_multiple_files = true;
+option java_outer_classname = "ChangeRecordProto";
+option java_package = "changerecord.photon.proto.consensus";
+option php_namespace = "photon\\proto\\consensus";
+
+message ChangeLogs {
+    repeated ChangeLog logs = 1;
+}
+
+message ChangeLog {
+    // Change log content.
+    oneof change {
+        StorageChangeLog storage = 1;
+    }
+}
+
+// Change log type.
+enum ChangeLogType {
+    // CHANGELOG_INVALID prevents from defaulting to a valid status.
+    CHANGELOG_INVALID = 0;
+    // CHANGELOG_AUDIT_START is an object audit start event.
+    CHANGELOG_AUDIT_START = 1;
+    // CHANGELOG_AUDIT_STOP is an object audit stop event.
+    CHANGELOG_AUDIT_STOP = 2;
+    // CHANGELOG_AUDIT_EXPIRATION is an object audit window expiration event.
+    CHANGELOG_AUDIT_EXPIRATION = 3;
+    // CHANGELOG_POR_START is an object PoR start event.
+    CHANGELOG_POR_START= 4;
+    // CHANGELOG_POR_START is an object PoR stop event.
+    CHANGELOG_POR_STOP = 5;
+    // CHANGELOG_POR_START is an object PoR window expiration event.
+    CHANGELOG_POR_EXPIRATION = 6;
+    // CHANGELOG_CONTRACT_EXPIRATION is a storage contract expiration event.
+    CHANGELOG_CONTRACT_EXPIRATION = 7;
+}
+
+message StorageChangeLog {
+    // Change type.
+    ChangeLogType type = 1;
+
+    // The root hash of the transaction (storage contract) associated with
+    // this event.
+    bytes tx_hash = 2 [(photon.ext.ssz_size) = "32"];
+
+    // The public key of the depot specified in the storage contract.
+    bytes depot = 3 [(photon.ext.ssz_size) = "48"];
+
+    // The public key of the auditor assigned for auditing task.
+    bytes auditor = 4 [(photon.ext.ssz_size) = "48"];
+}
