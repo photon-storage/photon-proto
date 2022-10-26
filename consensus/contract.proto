@@ -124,18 +124,21 @@ message PoR {
     // PoR start slot.
     uint64 start = 1 [(photon.ext.cast_type) = "Slot"];
 
+    // PoR end/exipratioin slot.
+    uint64 end = 2 [(photon.ext.cast_type) = "Slot"];
+
     // The Merkle tree root hash of the stored original data.
-    bytes object_hash = 2 [(photon.ext.ssz_size) = "32"];
+    bytes object_hash = 3 [(photon.ext.ssz_size) = "32"];
 
     // Audit hash used to retrieve the particular version of audit when the
     // PoR is initiated.
-    bytes audit_hash = 3 [(photon.ext.ssz_size) = "32"];
+    bytes audit_hash = 4 [(photon.ext.ssz_size) = "32"];
 
     // The public key of the last auditor.
-    bytes auditor = 4 [(photon.ext.ssz_size) = "48"];
+    bytes auditor = 5 [(photon.ext.ssz_size) = "48"];
 
     // PoR challenges.
-    repeated Challenge challenges = 5 [(photon.ext.ssz_max) = "32"];
+    repeated Challenge challenges = 6 [(photon.ext.ssz_max) = "32"];
 }
 
 // Request for a storage contract of the given tx hash.
