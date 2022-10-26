@@ -185,6 +185,7 @@ func CopyTx(tx *Transaction) *Transaction {
 	var och *TxDataObjectChallenge
 	if tx.TxDataObjectChallenge != nil {
 		och = &TxDataObjectChallenge{
+			Depot:        safeCopyBytes(tx.TxDataObjectChallenge.Depot),
 			CommitTxHash: safeCopyBytes(tx.TxDataObjectChallenge.CommitTxHash),
 		}
 	}

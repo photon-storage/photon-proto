@@ -170,8 +170,10 @@ message TxDataObjectAudit {
 // TxDataObjectChallenge requests a PoR proof for an object specified by
 // the commit tx hash.
 message TxDataObjectChallenge {
+    // The public key of the storage provider.
+    bytes depot = 1 [(photon.ext.ssz_size) = "48"];
     // The original object commit tx hash for identification.
-    bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
+    bytes commit_tx_hash = 2 [(photon.ext.ssz_size) = "32"];
 }
 
 // TxDataObjectPoR is an update to object's storage contract with PoR

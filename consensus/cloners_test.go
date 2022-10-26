@@ -478,6 +478,7 @@ func genTx() *Transaction {
 			},
 		},
 		TxDataObjectChallenge: &TxDataObjectChallenge{
+			Depot:        bytesN(48),
 			CommitTxHash: bytesN(32),
 		},
 		TxDataObjectPoR: &TxDataObjectPoR{

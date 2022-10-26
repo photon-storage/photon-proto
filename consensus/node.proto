@@ -13,6 +13,7 @@ import "consensus/contract.proto";
 import "consensus/attestation.proto";
 import "consensus/validator.proto";
 import "consensus/auditor.proto";
+import "consensus/changelog.proto";
 
 option csharp_namespace = "photon.proto.consensus";
 option go_package = "github.com/photon-storage/photon-proto/consensus;pbc";
@@ -273,26 +274,20 @@ service Node {
         };
     }
 
-    // Returns data of a finalized epoch.
-    rpc GetFinalizedEpoch(FinalizedEpochRequest) returns (FinalizedEpochResponse) {
-        option (google.api.http) = {
-            post: "/node/epoch/get"
-            body: "*"
-        };
-    }
-
-    // Server-side stream of finalized epoch updates.
-    rpc StreamFinalizedEpoch(StreamFinalizedEpochRequest) returns (stream FinalizedEpochResponse) {
-        option (google.api.http) = {
-            get: "/node/epoch/stream"
-        };
-    }
-
     // Request account info from the node
     rpc GetAccount(AccountRequest) returns (Account) {
         option (google.api.http) = {
             post: "/node/account"
             body: "*"
+        };
+    }
+
+    //
+    // APIs used for retrieving state change logs.
+    //
+    rpc GetStateChanges(StateChangeRequest) returns (StateChangeResponse) {
+        option (google.api.http) = {
+            get: "/node/statechange/get"
         };
     }
 
@@ -1125,38 +1120,37 @@ message WeakSubjectivityCheckpoint {
     uint64 epoch = 3 [(photon.ext.cast_type) = "Epoch"];
 }
 
-
-message StreamFinalizedEpochRequest {
+// StateChangeFilter defines a set of filter rules for filter relevant changes.
+message StateChangeFilter{
     // A list of tx types to filter txs.
-    repeated uint32 tx_types = 1;
-    // A list of storage event types to filter events.
-    repeated uint32 storage_event_types = 2;
+    repeated TxType tx_types = 1;
     // A list of 48 byte relevant public keys to filter txs and events.
-    repeated bytes public_keys = 3 [(photon.ext.ssz_size) = "?,48"];
+    repeated bytes public_keys = 2;
+    // A list of change log types to filter.
+    repeated ChangeLogType change_types = 3;
 }
 
-message FinalizedEpochRequest {
-    // Epoch to query.
-    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
-    // A list of tx types to filter txs.
-    repeated uint32 tx_types = 2;
-    // A list of storage event types to filter events.
-    repeated uint32 storage_event_types = 3;
-    // A list of 48 byte relevant public keys to filter txs and events.
-    repeated bytes public_keys = 4 [(photon.ext.ssz_size) = "?,48"];
+message StateChangeRequest {
+    oneof query_filter {
+        // Request for slot data.
+        uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
+
+        // Request for epoch data.
+        uint64 epoch = 2 [(photon.ext.cast_type) = "Epoch"];
+    }
+
+    // Filter.
+    StateChangeFilter state_change_filter = 3;
 }
 
-message FinalizedBlock {
+message SlotChange {
     uint64 Slot = 1 [(photon.ext.cast_type) = "Slot"];
-    // FinalizedTxs within the slot.
+    // Txs for the slot.
     repeated SignedTransaction txs = 2;
+    // Change logs for the slot.
+    repeated ChangeLog change_logs = 3;
 }
 
-message FinalizedEpochResponse {
-    // Epoch of the update.
-    uint64 epoch = 1 [(photon.ext.cast_type) = "Epoch"];
-    // FinalizedBlocks within the epoch.
-    repeated FinalizedBlock blocks = 2;
-    // StorageEvents within the epoch.
-    repeated StorageEvent storage_events = 3;
+message StateChangeResponse {
+    repeated SlotChange changes = 1;
 }
