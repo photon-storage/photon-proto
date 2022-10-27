@@ -142,7 +142,7 @@ generate_ssz() {
 rm -rf ${PROTO_BUILD}/ssz_tmp
 
 # generating ssz for different packages
-OBJS=AggregateAttestationAndProof,SignedAggregateAttestationAndProof,SignedBlock,State,SigningData,Status,BlocksByRangeRequest,ENRForkID,Metadata,SignedTransaction,StorageContract,Account,Validator,PoR,Audit
+OBJS=AggregateAttestationAndProof,SignedAggregateAttestationAndProof,SignedBlock,State,SigningData,Status,BlocksByRangeRequest,ENRForkID,Metadata,SignedTransaction,StorageContract,Account,Validator,PoRChallenge,Audit
 PKG=consensus && generate_ssz
 
 rm -rf ${PROTO_BUILD}/ssz_tmp

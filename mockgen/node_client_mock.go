@@ -258,6 +258,26 @@ func (mr *MockNodeClientMockRecorder) GetIndividualVotes(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetIndividualVotes", reflect.TypeOf((*MockNodeClient)(nil).GetIndividualVotes), varargs...)
 }
 
+// GetPoRChallenge mocks base method.
+func (m *MockNodeClient) GetPoRChallenge(arg0 context.Context, arg1 *pbc.GetPoRChallengeRequest, arg2 ...grpc.CallOption) (*pbc.GetPoRChallengeResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetPoRChallenge", varargs...)
+	ret0, _ := ret[0].(*pbc.GetPoRChallengeResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetPoRChallenge indicates an expected call of GetPoRChallenge.
+func (mr *MockNodeClientMockRecorder) GetPoRChallenge(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetPoRChallenge", reflect.TypeOf((*MockNodeClient)(nil).GetPoRChallenge), varargs...)
+}
+
 // GetStateChanges mocks base method.
 func (m *MockNodeClient) GetStateChanges(arg0 context.Context, arg1 *pbc.StateChangeRequest, arg2 ...grpc.CallOption) (*pbc.StateChangeResponse, error) {
 	m.ctrl.T.Helper()

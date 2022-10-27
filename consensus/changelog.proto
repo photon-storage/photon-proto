@@ -48,7 +48,7 @@ message StorageChangeLog {
 
     // The root hash of the transaction (storage contract) associated with
     // this event.
-    bytes tx_hash = 2 [(photon.ext.ssz_size) = "32"];
+    bytes commit_tx_hash = 2 [(photon.ext.ssz_size) = "32"];
 
     // The public key of the depot specified in the storage contract.
     bytes depot = 3 [(photon.ext.ssz_size) = "48"];

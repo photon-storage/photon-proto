@@ -274,6 +274,14 @@ service Node {
         };
     }
 
+    // Retrieve a PoR challenge for a storage contract.
+    rpc GetPoRChallenge(GetPoRChallengeRequest) returns (GetPoRChallengeResponse) {
+        option (google.api.http) = {
+            post: "/node/por_challenge/get"
+            body: "*"
+        };
+    }
+
     // Request account info from the node
     rpc GetAccount(AccountRequest) returns (Account) {
         option (google.api.http) = {
