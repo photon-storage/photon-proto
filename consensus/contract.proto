@@ -71,8 +71,8 @@ message StorageContract {
     // Audit hash of the Audit struct if non-empty.
     bytes audit_hash = 14 [(photon.ext.ssz_size) = "32"];
 
-    // PoR hash of the PoR struct if non-empty.
-    bytes por_hash = 15 [(photon.ext.ssz_size) = "32"];
+    // Hash of the PoRChallenge struct if non-empty.
+    bytes por_challenge_hash = 15 [(photon.ext.ssz_size) = "32"];
 }
 
 
@@ -112,7 +112,7 @@ message Audit {
     repeated bytes rands = 6 [(photon.ext.ssz_max) = "64,96"];
 }
 
-message Challenge {
+message BlockPick {
     // Block index challenged.
     uint32 block_index = 1;
 
@@ -120,7 +120,7 @@ message Challenge {
     bytes coefficient = 2 [(photon.ext.ssz_size) = "32"];
 }
 
-message PoR {
+message PoRChallenge {
     // PoR start slot.
     uint64 start = 1 [(photon.ext.cast_type) = "Slot"];
 
@@ -137,17 +137,30 @@ message PoR {
     // The public key of the last auditor.
     bytes auditor = 5 [(photon.ext.ssz_size) = "48"];
 
-    // PoR challenges.
-    repeated Challenge challenges = 6 [(photon.ext.ssz_max) = "32"];
+    // Random block picks for the PoR challenge.
+    repeated BlockPick picks = 6 [(photon.ext.ssz_max) = "32"];
 }
 
 // Request for a storage contract of the given tx hash.
 message GetStorageContractRequest{
     // Tx hash of the storage contract to be requested.
-    bytes tx_hash = 1 [(photon.ext.ssz_size) = "32"];
+    bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
 }
 
 // Response for the GetStorageContractRequest.
 message GetStorageContractResponse {
     StorageContract contract = 1;
+}
+
+// Request for a PoR challenge targeted for a storage contract.
+message GetPoRChallengeRequest{
+    // Tx hash of the storage contract.
+    bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
+    // Hash of the corresponding PoRChallenge struct to request.
+    bytes por_challenge_hash = 2 [(photon.ext.ssz_size) = "32"];
+}
+
+// Response for the GetPoRChallengeRequest.
+message GetPoRChallengeResponse {
+    PoRChallenge challenge = 1;
 }
