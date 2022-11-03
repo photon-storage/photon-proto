@@ -171,6 +171,7 @@ func CopyTx(tx *Transaction) *Transaction {
 		}
 		oa = &TxDataObjectAudit{
 			CommitTxHash: safeCopyBytes(tx.TxDataObjectAudit.CommitTxHash),
+			AuditHash:    safeCopyBytes(tx.TxDataObjectAudit.AuditHash),
 			Auditor:      safeCopyBytes(tx.TxDataObjectAudit.Auditor),
 			Depot:        safeCopyBytes(tx.TxDataObjectAudit.Depot),
 			Hash:         safeCopyBytes(tx.TxDataObjectAudit.Hash),
