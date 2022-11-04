@@ -460,6 +460,7 @@ func genTx() *Transaction {
 		},
 		TxDataObjectAudit: &TxDataObjectAudit{
 			CommitTxHash: bytesN(32),
+			AuditHash:    bytesN(32),
 			Auditor:      bytesN(48),
 			Depot:        bytesN(48),
 			Hash:         bytesN(32),

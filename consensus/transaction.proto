@@ -139,32 +139,35 @@ message TxDataObjectAudit {
     // The original object commit tx hash for identification.
     bytes commit_tx_hash = 1 [(photon.ext.ssz_size) = "32"];
 
+    // Hash of the audit struct committed in state.
+    bytes audit_hash = 2 [(photon.ext.ssz_size) = "32"];
+
     // The public key of the auditor.
-    bytes auditor = 2 [(photon.ext.ssz_size) = "48"];
+    bytes auditor = 3 [(photon.ext.ssz_size) = "48"];
 
     // The public key of the storage provider.
-    bytes depot = 3 [(photon.ext.ssz_size) = "48"];
+    bytes depot = 4 [(photon.ext.ssz_size) = "48"];
 
     // The Merkle tree root hash of the object's original data.
-    bytes hash = 4 [(photon.ext.ssz_size) = "32"];
+    bytes hash = 5 [(photon.ext.ssz_size) = "32"];
 
     // The size of the object's original data to be stored.
-    uint64 size = 5;
+    uint64 size = 6;
 
     // The Merkle tree root hash of the object's newly encoded data.
-    bytes encoded_hash = 6 [(photon.ext.ssz_size) = "32"];
+    bytes encoded_hash = 7 [(photon.ext.ssz_size) = "32"];
 
     // The size of the object's encoded data to be stored.
-    uint64 encoded_size = 7;
+    uint64 encoded_size = 8;
 
     // Number of blocks of encoded data.
-    uint32 num_blocks = 8;
+    uint32 num_blocks = 9;
 
     // An array of random elements used to generated block signature.
     // The count is equal to sectors_per_block.
     // TODO(kmax): using fixed length because ssz_max would not
     // allow nil point check and skip ssz calculation.
-    repeated bytes rands = 9 [(photon.ext.ssz_size) = "8,96"];
+    repeated bytes rands = 10 [(photon.ext.ssz_size) = "8,96"];
 }
 
 // TxDataObjectChallenge requests a PoR proof for an object specified by
