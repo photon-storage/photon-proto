@@ -506,6 +506,14 @@ service Node {
             get: "/node/validator/doppelganger"
         };
     }
+
+    // Retrieve a storage contract for a given request.
+    rpc GetTransaction(GetTransactionRequest) returns (GetTransactionResponse) {
+        option (google.api.http) = {
+            get: "/node/transaction"
+        };
+    }
+
 }
 
 // SetAction defines the type of action that should be applied to the keys in a validator change set.

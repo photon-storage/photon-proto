@@ -208,3 +208,16 @@ message SubmitTxResponse {
     uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
     bytes tx_hash = 2;
 }
+
+// Request for a transaction detail of the given tx hash.
+message GetTransactionRequest{
+    // Hash of the transaction to be requested.
+    bytes hash = 1 [(photon.ext.ssz_size) = "32"];
+}
+
+// Response for the GetTransactionRequest.
+message GetTransactionResponse {
+    uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
+    bool finalized = 2;
+    SignedTransaction signedTx = 3;
+}

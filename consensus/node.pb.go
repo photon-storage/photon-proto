@@ -4330,7 +4330,7 @@ var file_consensus_node_proto_rawDesc = []byte{
 	0x19, 0x0a, 0x15, 0x52, 0x45, 0x4d, 0x4f, 0x56, 0x45, 0x5f, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x41,
 	0x54, 0x4f, 0x52, 0x5f, 0x4b, 0x45, 0x59, 0x53, 0x10, 0x01, 0x12, 0x16, 0x0a, 0x12, 0x53, 0x45,
 	0x54, 0x5f, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x4b, 0x45, 0x59, 0x53,
-	0x10, 0x02, 0x32, 0x87, 0x30, 0x0a, 0x04, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x85, 0x01, 0x0a, 0x10,
+	0x10, 0x02, 0x32, 0x87, 0x31, 0x0a, 0x04, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x85, 0x01, 0x0a, 0x10,
 	0x4c, 0x69, 0x73, 0x74, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
 	0x12, 0x29, 0x2e, 0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e,
 	0x73, 0x75, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74,
@@ -4714,7 +4714,15 @@ var file_consensus_node_proto_rawDesc = []byte{
 	0x73, 0x2e, 0x44, 0x6f, 0x70, 0x70, 0x65, 0x6c, 0x47, 0x61, 0x6e, 0x67, 0x65, 0x72, 0x52, 0x65,
 	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x22, 0x24, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1e, 0x12, 0x1c,
 	0x2f, 0x6e, 0x6f, 0x64, 0x65, 0x2f, 0x76, 0x61, 0x6c, 0x69, 0x64, 0x61, 0x74, 0x6f, 0x72, 0x2f,
-	0x64, 0x6f, 0x70, 0x70, 0x65, 0x6c, 0x67, 0x61, 0x6e, 0x67, 0x65, 0x72, 0x42, 0x95, 0x01, 0x0a,
+	0x64, 0x6f, 0x70, 0x70, 0x65, 0x6c, 0x67, 0x61, 0x6e, 0x67, 0x65, 0x72, 0x12, 0x7e, 0x0a, 0x0e,
+	0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x12, 0x27,
+	0x2e, 0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75,
+	0x73, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e,
+	0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x28, 0x2e, 0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e,
+	0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73, 0x2e, 0x47, 0x65, 0x74, 0x54, 0x72,
+	0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
+	0x65, 0x22, 0x19, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x13, 0x12, 0x11, 0x2f, 0x6e, 0x6f, 0x64, 0x65,
+	0x2f, 0x74, 0x72, 0x61, 0x6e, 0x73, 0x61, 0x63, 0x74, 0x69, 0x6f, 0x6e, 0x42, 0x95, 0x01, 0x0a,
 	0x1e, 0x73, 0x74, 0x6f, 0x72, 0x61, 0x67, 0x65, 0x2e, 0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e,
 	0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73, 0x42,
 	0x09, 0x4e, 0x6f, 0x64, 0x65, 0x50, 0x72, 0x6f, 0x74, 0x6f, 0x50, 0x01, 0x5a, 0x34, 0x67, 0x69,
@@ -4816,26 +4824,28 @@ var file_consensus_node_proto_goTypes = []interface{}{
 	(*SignedAggregateSubmitRequest)(nil),          // 71: photon.consensus.SignedAggregateSubmitRequest
 	(*CommitteeSubnetsSubscribeRequest)(nil),      // 72: photon.consensus.CommitteeSubnetsSubscribeRequest
 	(*DoppelGangerRequest)(nil),                   // 73: photon.consensus.DoppelGangerRequest
-	(*ValidatorInfo)(nil),                         // 74: photon.consensus.ValidatorInfo
-	(*SubmitTxResponse)(nil),                      // 75: photon.consensus.SubmitTxResponse
-	(*GetStorageContractResponse)(nil),            // 76: photon.consensus.GetStorageContractResponse
-	(*GetPoRChallengeResponse)(nil),               // 77: photon.consensus.GetPoRChallengeResponse
-	(*Account)(nil),                               // 78: photon.consensus.Account
-	(*DutiesResponse)(nil),                        // 79: photon.consensus.DutiesResponse
-	(*ChainStartResponse)(nil),                    // 80: photon.consensus.ChainStartResponse
-	(*ValidatorActivationResponse)(nil),           // 81: photon.consensus.ValidatorActivationResponse
-	(*ValidatorIndexResponse)(nil),                // 82: photon.consensus.ValidatorIndexResponse
-	(*ValidatorStatusResponse)(nil),               // 83: photon.consensus.ValidatorStatusResponse
-	(*MultipleValidatorStatusResponse)(nil),       // 84: photon.consensus.MultipleValidatorStatusResponse
-	(*Auditor)(nil),                               // 85: photon.consensus.Auditor
-	(*AuditorStatusResponse)(nil),                 // 86: photon.consensus.AuditorStatusResponse
-	(*Block)(nil),                                 // 87: photon.consensus.Block
-	(*ProposeResponse)(nil),                       // 88: photon.consensus.ProposeResponse
-	(*AttestationData)(nil),                       // 89: photon.consensus.AttestationData
-	(*AttestResponse)(nil),                        // 90: photon.consensus.AttestResponse
-	(*AggregateSelectionResponse)(nil),            // 91: photon.consensus.AggregateSelectionResponse
-	(*SignedAggregateSubmitResponse)(nil),         // 92: photon.consensus.SignedAggregateSubmitResponse
-	(*DoppelGangerResponse)(nil),                  // 93: photon.consensus.DoppelGangerResponse
+	(*GetTransactionRequest)(nil),                 // 74: photon.consensus.GetTransactionRequest
+	(*ValidatorInfo)(nil),                         // 75: photon.consensus.ValidatorInfo
+	(*SubmitTxResponse)(nil),                      // 76: photon.consensus.SubmitTxResponse
+	(*GetStorageContractResponse)(nil),            // 77: photon.consensus.GetStorageContractResponse
+	(*GetPoRChallengeResponse)(nil),               // 78: photon.consensus.GetPoRChallengeResponse
+	(*Account)(nil),                               // 79: photon.consensus.Account
+	(*DutiesResponse)(nil),                        // 80: photon.consensus.DutiesResponse
+	(*ChainStartResponse)(nil),                    // 81: photon.consensus.ChainStartResponse
+	(*ValidatorActivationResponse)(nil),           // 82: photon.consensus.ValidatorActivationResponse
+	(*ValidatorIndexResponse)(nil),                // 83: photon.consensus.ValidatorIndexResponse
+	(*ValidatorStatusResponse)(nil),               // 84: photon.consensus.ValidatorStatusResponse
+	(*MultipleValidatorStatusResponse)(nil),       // 85: photon.consensus.MultipleValidatorStatusResponse
+	(*Auditor)(nil),                               // 86: photon.consensus.Auditor
+	(*AuditorStatusResponse)(nil),                 // 87: photon.consensus.AuditorStatusResponse
+	(*Block)(nil),                                 // 88: photon.consensus.Block
+	(*ProposeResponse)(nil),                       // 89: photon.consensus.ProposeResponse
+	(*AttestationData)(nil),                       // 90: photon.consensus.AttestationData
+	(*AttestResponse)(nil),                        // 91: photon.consensus.AttestResponse
+	(*AggregateSelectionResponse)(nil),            // 92: photon.consensus.AggregateSelectionResponse
+	(*SignedAggregateSubmitResponse)(nil),         // 93: photon.consensus.SignedAggregateSubmitResponse
+	(*DoppelGangerResponse)(nil),                  // 94: photon.consensus.DoppelGangerResponse
+	(*GetTransactionResponse)(nil),                // 95: photon.consensus.GetTransactionResponse
 }
 var file_consensus_node_proto_depIdxs = []int32{
 	0,  // 0: photon.consensus.ValidatorChangeSet.action:type_name -> photon.consensus.SetAction
@@ -4906,54 +4916,56 @@ var file_consensus_node_proto_depIdxs = []int32{
 	71, // 65: photon.consensus.Node.SubmitSignedAggregateSelectionProof:input_type -> photon.consensus.SignedAggregateSubmitRequest
 	72, // 66: photon.consensus.Node.SubscribeCommitteeSubnets:input_type -> photon.consensus.CommitteeSubnetsSubscribeRequest
 	73, // 67: photon.consensus.Node.CheckDoppelGanger:input_type -> photon.consensus.DoppelGangerRequest
-	4,  // 68: photon.consensus.Node.ListAttestations:output_type -> photon.consensus.ListAttestationsResponse
-	5,  // 69: photon.consensus.Node.ListIndexedAttestations:output_type -> photon.consensus.ListIndexedAttestationsResponse
-	47, // 70: photon.consensus.Node.StreamAttestations:output_type -> photon.consensus.Attestation
-	48, // 71: photon.consensus.Node.StreamIndexedAttestations:output_type -> photon.consensus.IndexedAttestation
-	28, // 72: photon.consensus.Node.AttestationPool:output_type -> photon.consensus.AttestationPoolResponse
-	7,  // 73: photon.consensus.Node.ListBlocks:output_type -> photon.consensus.ListBlocksResponse
-	49, // 74: photon.consensus.Node.StreamBlocks:output_type -> photon.consensus.SignedBlock
-	9,  // 75: photon.consensus.Node.StreamChainHead:output_type -> photon.consensus.ChainHead
-	9,  // 76: photon.consensus.Node.GetChainHead:output_type -> photon.consensus.ChainHead
-	34, // 77: photon.consensus.Node.GetWeakSubjectivityCheckpoint:output_type -> photon.consensus.WeakSubjectivityCheckpoint
-	11, // 78: photon.consensus.Node.ListCommittees:output_type -> photon.consensus.Committees
-	13, // 79: photon.consensus.Node.ListValidatorBalances:output_type -> photon.consensus.ValidatorBalances
-	16, // 80: photon.consensus.Node.ListValidators:output_type -> photon.consensus.Validators
-	55, // 81: photon.consensus.Node.GetValidator:output_type -> photon.consensus.Validator
-	18, // 82: photon.consensus.Node.GetValidatorActiveSetChanges:output_type -> photon.consensus.ActiveSetChanges
-	21, // 83: photon.consensus.Node.GetValidatorQueue:output_type -> photon.consensus.ValidatorQueue
-	20, // 84: photon.consensus.Node.GetValidatorPerformance:output_type -> photon.consensus.ValidatorPerformanceResponse
-	23, // 85: photon.consensus.Node.ListValidatorAssignments:output_type -> photon.consensus.ValidatorAssignments
-	25, // 86: photon.consensus.Node.GetValidatorParticipation:output_type -> photon.consensus.ValidatorParticipationResponse
-	29, // 87: photon.consensus.Node.GetChainConfig:output_type -> photon.consensus.ChainConfig
-	74, // 88: photon.consensus.Node.StreamValidatorsInfo:output_type -> photon.consensus.ValidatorInfo
-	31, // 89: photon.consensus.Node.SubmitAttesterSlashing:output_type -> photon.consensus.SubmitSlashingResponse
-	31, // 90: photon.consensus.Node.SubmitProposerSlashing:output_type -> photon.consensus.SubmitSlashingResponse
-	33, // 91: photon.consensus.Node.GetIndividualVotes:output_type -> photon.consensus.IndividualVotesRespond
-	75, // 92: photon.consensus.Node.SubmitTx:output_type -> photon.consensus.SubmitTxResponse
-	76, // 93: photon.consensus.Node.GetStorageContract:output_type -> photon.consensus.GetStorageContractResponse
-	77, // 94: photon.consensus.Node.GetPoRChallenge:output_type -> photon.consensus.GetPoRChallengeResponse
-	78, // 95: photon.consensus.Node.GetAccount:output_type -> photon.consensus.Account
-	38, // 96: photon.consensus.Node.GetStateChanges:output_type -> photon.consensus.StateChangeResponse
-	79, // 97: photon.consensus.Node.GetDuties:output_type -> photon.consensus.DutiesResponse
-	79, // 98: photon.consensus.Node.StreamDuties:output_type -> photon.consensus.DutiesResponse
-	80, // 99: photon.consensus.Node.WaitForChainStart:output_type -> photon.consensus.ChainStartResponse
-	81, // 100: photon.consensus.Node.WaitForActivation:output_type -> photon.consensus.ValidatorActivationResponse
-	82, // 101: photon.consensus.Node.ValidatorIndex:output_type -> photon.consensus.ValidatorIndexResponse
-	83, // 102: photon.consensus.Node.ValidatorStatus:output_type -> photon.consensus.ValidatorStatusResponse
-	84, // 103: photon.consensus.Node.MultipleValidatorStatus:output_type -> photon.consensus.MultipleValidatorStatusResponse
-	85, // 104: photon.consensus.Node.GetAuditor:output_type -> photon.consensus.Auditor
-	86, // 105: photon.consensus.Node.AuditorStatus:output_type -> photon.consensus.AuditorStatusResponse
-	87, // 106: photon.consensus.Node.GetBlock:output_type -> photon.consensus.Block
-	88, // 107: photon.consensus.Node.ProposeBlock:output_type -> photon.consensus.ProposeResponse
-	89, // 108: photon.consensus.Node.GetAttestationData:output_type -> photon.consensus.AttestationData
-	90, // 109: photon.consensus.Node.ProposeAttestation:output_type -> photon.consensus.AttestResponse
-	91, // 110: photon.consensus.Node.SubmitAggregateSelectionProof:output_type -> photon.consensus.AggregateSelectionResponse
-	92, // 111: photon.consensus.Node.SubmitSignedAggregateSelectionProof:output_type -> photon.consensus.SignedAggregateSubmitResponse
-	56, // 112: photon.consensus.Node.SubscribeCommitteeSubnets:output_type -> google.protobuf.Empty
-	93, // 113: photon.consensus.Node.CheckDoppelGanger:output_type -> photon.consensus.DoppelGangerResponse
-	68, // [68:114] is the sub-list for method output_type
-	22, // [22:68] is the sub-list for method input_type
+	74, // 68: photon.consensus.Node.GetTransaction:input_type -> photon.consensus.GetTransactionRequest
+	4,  // 69: photon.consensus.Node.ListAttestations:output_type -> photon.consensus.ListAttestationsResponse
+	5,  // 70: photon.consensus.Node.ListIndexedAttestations:output_type -> photon.consensus.ListIndexedAttestationsResponse
+	47, // 71: photon.consensus.Node.StreamAttestations:output_type -> photon.consensus.Attestation
+	48, // 72: photon.consensus.Node.StreamIndexedAttestations:output_type -> photon.consensus.IndexedAttestation
+	28, // 73: photon.consensus.Node.AttestationPool:output_type -> photon.consensus.AttestationPoolResponse
+	7,  // 74: photon.consensus.Node.ListBlocks:output_type -> photon.consensus.ListBlocksResponse
+	49, // 75: photon.consensus.Node.StreamBlocks:output_type -> photon.consensus.SignedBlock
+	9,  // 76: photon.consensus.Node.StreamChainHead:output_type -> photon.consensus.ChainHead
+	9,  // 77: photon.consensus.Node.GetChainHead:output_type -> photon.consensus.ChainHead
+	34, // 78: photon.consensus.Node.GetWeakSubjectivityCheckpoint:output_type -> photon.consensus.WeakSubjectivityCheckpoint
+	11, // 79: photon.consensus.Node.ListCommittees:output_type -> photon.consensus.Committees
+	13, // 80: photon.consensus.Node.ListValidatorBalances:output_type -> photon.consensus.ValidatorBalances
+	16, // 81: photon.consensus.Node.ListValidators:output_type -> photon.consensus.Validators
+	55, // 82: photon.consensus.Node.GetValidator:output_type -> photon.consensus.Validator
+	18, // 83: photon.consensus.Node.GetValidatorActiveSetChanges:output_type -> photon.consensus.ActiveSetChanges
+	21, // 84: photon.consensus.Node.GetValidatorQueue:output_type -> photon.consensus.ValidatorQueue
+	20, // 85: photon.consensus.Node.GetValidatorPerformance:output_type -> photon.consensus.ValidatorPerformanceResponse
+	23, // 86: photon.consensus.Node.ListValidatorAssignments:output_type -> photon.consensus.ValidatorAssignments
+	25, // 87: photon.consensus.Node.GetValidatorParticipation:output_type -> photon.consensus.ValidatorParticipationResponse
+	29, // 88: photon.consensus.Node.GetChainConfig:output_type -> photon.consensus.ChainConfig
+	75, // 89: photon.consensus.Node.StreamValidatorsInfo:output_type -> photon.consensus.ValidatorInfo
+	31, // 90: photon.consensus.Node.SubmitAttesterSlashing:output_type -> photon.consensus.SubmitSlashingResponse
+	31, // 91: photon.consensus.Node.SubmitProposerSlashing:output_type -> photon.consensus.SubmitSlashingResponse
+	33, // 92: photon.consensus.Node.GetIndividualVotes:output_type -> photon.consensus.IndividualVotesRespond
+	76, // 93: photon.consensus.Node.SubmitTx:output_type -> photon.consensus.SubmitTxResponse
+	77, // 94: photon.consensus.Node.GetStorageContract:output_type -> photon.consensus.GetStorageContractResponse
+	78, // 95: photon.consensus.Node.GetPoRChallenge:output_type -> photon.consensus.GetPoRChallengeResponse
+	79, // 96: photon.consensus.Node.GetAccount:output_type -> photon.consensus.Account
+	38, // 97: photon.consensus.Node.GetStateChanges:output_type -> photon.consensus.StateChangeResponse
+	80, // 98: photon.consensus.Node.GetDuties:output_type -> photon.consensus.DutiesResponse
+	80, // 99: photon.consensus.Node.StreamDuties:output_type -> photon.consensus.DutiesResponse
+	81, // 100: photon.consensus.Node.WaitForChainStart:output_type -> photon.consensus.ChainStartResponse
+	82, // 101: photon.consensus.Node.WaitForActivation:output_type -> photon.consensus.ValidatorActivationResponse
+	83, // 102: photon.consensus.Node.ValidatorIndex:output_type -> photon.consensus.ValidatorIndexResponse
+	84, // 103: photon.consensus.Node.ValidatorStatus:output_type -> photon.consensus.ValidatorStatusResponse
+	85, // 104: photon.consensus.Node.MultipleValidatorStatus:output_type -> photon.consensus.MultipleValidatorStatusResponse
+	86, // 105: photon.consensus.Node.GetAuditor:output_type -> photon.consensus.Auditor
+	87, // 106: photon.consensus.Node.AuditorStatus:output_type -> photon.consensus.AuditorStatusResponse
+	88, // 107: photon.consensus.Node.GetBlock:output_type -> photon.consensus.Block
+	89, // 108: photon.consensus.Node.ProposeBlock:output_type -> photon.consensus.ProposeResponse
+	90, // 109: photon.consensus.Node.GetAttestationData:output_type -> photon.consensus.AttestationData
+	91, // 110: photon.consensus.Node.ProposeAttestation:output_type -> photon.consensus.AttestResponse
+	92, // 111: photon.consensus.Node.SubmitAggregateSelectionProof:output_type -> photon.consensus.AggregateSelectionResponse
+	93, // 112: photon.consensus.Node.SubmitSignedAggregateSelectionProof:output_type -> photon.consensus.SignedAggregateSubmitResponse
+	56, // 113: photon.consensus.Node.SubscribeCommitteeSubnets:output_type -> google.protobuf.Empty
+	94, // 114: photon.consensus.Node.CheckDoppelGanger:output_type -> photon.consensus.DoppelGangerResponse
+	95, // 115: photon.consensus.Node.GetTransaction:output_type -> photon.consensus.GetTransactionResponse
+	69, // [69:116] is the sub-list for method output_type
+	22, // [22:69] is the sub-list for method input_type
 	22, // [22:22] is the sub-list for extension type_name
 	22, // [22:22] is the sub-list for extension extendee
 	0,  // [0:22] is the sub-list for field type_name
@@ -5817,6 +5829,8 @@ type NodeClient interface {
 	// Checks the node if another instance of the provided validator keys have been
 	// attesting/proposing for you.
 	CheckDoppelGanger(ctx context.Context, in *DoppelGangerRequest, opts ...grpc.CallOption) (*DoppelGangerResponse, error)
+	// Retrieve a storage contract for a given request.
+	GetTransaction(ctx context.Context, in *GetTransactionRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error)
 }
 
 type nodeClient struct {
@@ -6425,6 +6439,15 @@ func (c *nodeClient) CheckDoppelGanger(ctx context.Context, in *DoppelGangerRequ
 	return out, nil
 }
 
+func (c *nodeClient) GetTransaction(ctx context.Context, in *GetTransactionRequest, opts ...grpc.CallOption) (*GetTransactionResponse, error) {
+	out := new(GetTransactionResponse)
+	err := c.cc.Invoke(ctx, "/photon.consensus.Node/GetTransaction", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // NodeServer is the server API for Node service.
 type NodeServer interface {
 	// Retrieve attestations by block root, slot, or epoch.
@@ -6660,6 +6683,8 @@ type NodeServer interface {
 	// Checks the node if another instance of the provided validator keys have been
 	// attesting/proposing for you.
 	CheckDoppelGanger(context.Context, *DoppelGangerRequest) (*DoppelGangerResponse, error)
+	// Retrieve a storage contract for a given request.
+	GetTransaction(context.Context, *GetTransactionRequest) (*GetTransactionResponse, error)
 }
 
 // UnimplementedNodeServer can be embedded to have forward compatible implementations.
@@ -6803,6 +6828,9 @@ func (*UnimplementedNodeServer) SubscribeCommitteeSubnets(context.Context, *Comm
 }
 func (*UnimplementedNodeServer) CheckDoppelGanger(context.Context, *DoppelGangerRequest) (*DoppelGangerResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CheckDoppelGanger not implemented")
+}
+func (*UnimplementedNodeServer) GetTransaction(context.Context, *GetTransactionRequest) (*GetTransactionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTransaction not implemented")
 }
 
 func RegisterNodeServer(s *grpc.Server, srv NodeServer) {
@@ -7666,6 +7694,24 @@ func _Node_CheckDoppelGanger_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Node_GetTransaction_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTransactionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(NodeServer).GetTransaction(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/photon.consensus.Node/GetTransaction",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(NodeServer).GetTransaction(ctx, req.(*GetTransactionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Node_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "photon.consensus.Node",
 	HandlerType: (*NodeServer)(nil),
@@ -7821,6 +7867,10 @@ var _Node_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CheckDoppelGanger",
 			Handler:    _Node_CheckDoppelGanger_Handler,
+		},
+		{
+			MethodName: "GetTransaction",
+			Handler:    _Node_GetTransaction_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
