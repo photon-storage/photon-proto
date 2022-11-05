@@ -318,6 +318,26 @@ func (mr *MockNodeClientMockRecorder) GetStorageContract(arg0, arg1 interface{},
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetStorageContract", reflect.TypeOf((*MockNodeClient)(nil).GetStorageContract), varargs...)
 }
 
+// GetTransaction mocks base method.
+func (m *MockNodeClient) GetTransaction(arg0 context.Context, arg1 *pbc.GetTransactionRequest, arg2 ...grpc.CallOption) (*pbc.GetTransactionResponse, error) {
+	m.ctrl.T.Helper()
+	varargs := []interface{}{arg0, arg1}
+	for _, a := range arg2 {
+		varargs = append(varargs, a)
+	}
+	ret := m.ctrl.Call(m, "GetTransaction", varargs...)
+	ret0, _ := ret[0].(*pbc.GetTransactionResponse)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetTransaction indicates an expected call of GetTransaction.
+func (mr *MockNodeClientMockRecorder) GetTransaction(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	varargs := append([]interface{}{arg0, arg1}, arg2...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetTransaction", reflect.TypeOf((*MockNodeClient)(nil).GetTransaction), varargs...)
+}
+
 // GetValidator mocks base method.
 func (m *MockNodeClient) GetValidator(arg0 context.Context, arg1 *pbc.GetValidatorRequest, arg2 ...grpc.CallOption) (*pbc.Validator, error) {
 	m.ctrl.T.Helper()
