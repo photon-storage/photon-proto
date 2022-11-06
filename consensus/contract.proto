@@ -21,6 +21,9 @@ enum StorageStatus {
     OPEN = 2;
     // AUDIT indicates an object audit is required.
     AUDIT = 3;
+    // ZOMBIE indicates zombie storage contract (not effective) due to
+    // reasons such as depleted pledge, etc.
+    ZOMBIE = 4;
 }
 
 // StorageContract defines a storage contract between an account and
@@ -58,24 +61,27 @@ message StorageContract {
     // Storage providers collateral deposit.
     uint64 pledge = 10;
 
+    // Penalty per unresponded PoR challenge.
+    uint64 por_penalty = 11;
+
     // Status defines status of contract. Equivalent to StorageStatus. Use
     // uint32 because SSZ does not support proto enum type.
-    uint32 status = 11;
+    uint32 status = 12;
 
     // Start slot of the status.
-    uint64 status_start = 12 [(photon.ext.cast_type) = "Slot"];
+    uint64 status_start = 13 [(photon.ext.cast_type) = "Slot"];
 
     // End slot of the status.
-    uint64 status_end = 13 [(photon.ext.cast_type) = "Slot"];
+    uint64 status_end = 14 [(photon.ext.cast_type) = "Slot"];
 
     // The public key of the selected auditor.
-    bytes auditor = 14 [(photon.ext.ssz_size) = "48"];
+    bytes auditor = 15 [(photon.ext.ssz_size) = "48"];
 
     // Audit hash of the Audit struct if non-empty.
-    bytes audit_hash = 15 [(photon.ext.ssz_size) = "32"];
+    bytes audit_hash = 16 [(photon.ext.ssz_size) = "32"];
 
     // Hash of the PoRChallenge struct if non-empty.
-    bytes por_challenge_hash = 16 [(photon.ext.ssz_size) = "32"];
+    bytes por_challenge_hash = 17 [(photon.ext.ssz_size) = "32"];
 }
 
 
@@ -124,24 +130,27 @@ message BlockPick {
 }
 
 message PoRChallenge {
+     // The public key of the object PoR challenger.
+    bytes challenger = 1 [(photon.ext.ssz_size) = "48"];
+
     // PoR start slot.
-    uint64 start = 1 [(photon.ext.cast_type) = "Slot"];
+    uint64 start = 2 [(photon.ext.cast_type) = "Slot"];
 
     // PoR end/exipratioin slot.
-    uint64 end = 2 [(photon.ext.cast_type) = "Slot"];
+    uint64 end = 3 [(photon.ext.cast_type) = "Slot"];
 
     // The Merkle tree root hash of the stored original data.
-    bytes object_hash = 3 [(photon.ext.ssz_size) = "32"];
+    bytes object_hash = 4 [(photon.ext.ssz_size) = "32"];
 
     // Audit hash used to retrieve the particular version of audit when the
     // PoR is initiated.
-    bytes audit_hash = 4 [(photon.ext.ssz_size) = "32"];
+    bytes audit_hash = 5 [(photon.ext.ssz_size) = "32"];
 
     // The public key of the last auditor.
-    bytes auditor = 5 [(photon.ext.ssz_size) = "48"];
+    bytes auditor = 6 [(photon.ext.ssz_size) = "48"];
 
     // Random block picks for the PoR challenge.
-    repeated BlockPick picks = 6 [(photon.ext.ssz_max) = "32"];
+    repeated BlockPick picks = 7 [(photon.ext.ssz_max) = "32"];
 }
 
 // Request for a storage contract of the given tx hash.
