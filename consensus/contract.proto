@@ -61,27 +61,33 @@ message StorageContract {
     // Storage providers collateral deposit.
     uint64 pledge = 10;
 
-    // Penalty per unresponded PoR challenge.
-    uint64 por_penalty = 11;
+    Mutable mutable = 11;
 
-    // Status defines status of contract. Equivalent to StorageStatus. Use
-    // uint32 because SSZ does not support proto enum type.
-    uint32 status = 12;
+    // Fields that can be updated during the lifetime of a contract.
+    // TODO(kmax): consider moving this struct into a separate trie to save space.
+    message Mutable {
+        // Status defines status of contract. Equivalent to StorageStatus. Use
+        // uint32 because SSZ does not support proto enum type.
+        uint32 status = 1;
 
-    // Start slot of the status.
-    uint64 status_start = 13 [(photon.ext.cast_type) = "Slot"];
+        // Start slot of the status.
+        uint64 status_start = 2 [(photon.ext.cast_type) = "Slot"];
 
-    // End slot of the status.
-    uint64 status_end = 14 [(photon.ext.cast_type) = "Slot"];
+        // End slot of the status.
+        uint64 status_end = 3 [(photon.ext.cast_type) = "Slot"];
 
-    // The public key of the selected auditor.
-    bytes auditor = 15 [(photon.ext.ssz_size) = "48"];
+        // The public key of the selected auditor.
+        bytes auditor = 4 [(photon.ext.ssz_size) = "48"];
 
-    // Audit hash of the Audit struct if non-empty.
-    bytes audit_hash = 16 [(photon.ext.ssz_size) = "32"];
+        // Audit hash of the Audit struct if non-empty.
+        bytes audit_hash = 5 [(photon.ext.ssz_size) = "32"];
 
-    // Hash of the PoRChallenge struct if non-empty.
-    bytes por_challenge_hash = 17 [(photon.ext.ssz_size) = "32"];
+        // Hash of the PoRChallenge struct if non-empty.
+        bytes por_challenge_hash = 6 [(photon.ext.ssz_size) = "32"];
+
+        // Remaining pledge.
+        uint64 pledge_remaining = 7;
+    }
 }
 
 
