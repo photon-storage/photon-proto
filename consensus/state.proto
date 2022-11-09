@@ -70,4 +70,8 @@ message Storage {
     // Accumulated reward rate at current slot used for tracking storage
     // contract's reward.
     uint64 reward_rate = 3;
+    // Aggregated fee paid out to depot per slot.
+    uint64 fee_rate = 4;
+    // The latest fee rate effective slot.
+    uint64 fee_rate_since = 5 [(photon.ext.cast_type) = "Slot"];
 }
