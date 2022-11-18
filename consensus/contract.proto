@@ -21,9 +21,12 @@ enum StorageStatus {
     OPEN = 2;
     // AUDIT indicates an object audit is required.
     AUDIT = 3;
+    // PAUSED indicates an object has missed an audit assignment and
+    // is waiting for the next audit assignment.
+    PAUSED = 4;
     // ZOMBIE indicates zombie storage contract (not effective) due to
     // reasons such as depleted pledge, etc.
-    ZOMBIE = 4;
+    ZOMBIE = 5;
 }
 
 // StorageContract defines a storage contract between an account and
