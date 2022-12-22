@@ -31,7 +31,6 @@ message State {
     Checkpoint finalized_checkpoint = 204;
 
     // Validator participation & slashings [301-400]
-    repeated uint64 balances = 301 [(photon.ext.ssz_max) = "1099511627776"];
     repeated uint64 inactivity_scores = 302 [(photon.ext.ssz_max) = "1099511627776"];
     bytes previous_epoch_participation = 303 [(photon.ext.ssz_max) = "1099511627776"];
     bytes current_epoch_participation = 304 [(photon.ext.ssz_max) = "1099511627776"];

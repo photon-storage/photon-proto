@@ -322,6 +322,7 @@ func CopyValidator(val *Validator) *Validator {
 	copy(pubKey, val.PublicKey)
 	return &Validator{
 		PublicKey:                  pubKey,
+		Balance:                    val.Balance,
 		Slashed:                    val.Slashed,
 		ActivationEligibilityEpoch: val.ActivationEligibilityEpoch,
 		ActivationEpoch:            val.ActivationEpoch,

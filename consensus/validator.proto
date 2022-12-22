@@ -213,35 +213,38 @@ message CommitteeSubnetsSubscribeRequest {
     repeated bool is_aggregator = 3;
 }
 
-// An Ethereum validator.
+// A photon chain validator.
 message Validator {
     // 48 byte BLS public key used for the validator's activities.
     bytes public_key = 1 [(photon.ext.ssz_size) = "48"];
 
+    // Validator staking balance.
+    uint64 balance = 2;
+
     // Whether or not the validator has been slashed.
-    bool slashed = 2;
+    bool slashed = 3;
 
     // Epoch when the validator became eligible for activation. This field may
     // be zero if the validator was present in the Ethereum proof of stake genesis. This
     // field is FAR_FUTURE_EPOCH if the validator has not been activated.
-    uint64 activation_eligibility_epoch = 3 [(photon.ext.cast_type) = "Epoch"];
+    uint64 activation_eligibility_epoch = 4 [(photon.ext.cast_type) = "Epoch"];
 
     // Epoch when the validator was activated. This field may be zero if the
     // validator was present in the Ethereum proof of stake genesis. This field is
     // FAR_FUTURE_EPOCH if the validator has not been activated.
-    uint64 activation_epoch = 4 [(photon.ext.cast_type) = "Epoch"];
+    uint64 activation_epoch = 5 [(photon.ext.cast_type) = "Epoch"];
 
     // Epoch when the validator was exited. This field is FAR_FUTURE_EPOCH if
     // the validator has not exited.
     // FAR_FUTURE_EPOCH is a constant defined by the official Ethereum Beacon Chain specification:
     // https://github.com/ethereum/consensus-specs/blob/v0.9.2/specs/core/0_beacon-chain.md#constants
-    uint64 exit_epoch = 5 [(photon.ext.cast_type) = "Epoch"];
+    uint64 exit_epoch = 6 [(photon.ext.cast_type) = "Epoch"];
 
     // Epoch when the validator is eligible to withdraw their funds. This field
     // is FAR_FUTURE_EPOCH if the validator has not exited.
     // FAR_FUTURE_EPOCH is a constant defined by the official Ethereum Beacon Chain specification:
     // https://github.com/ethereum/consensus-specs/blob/v0.9.2/specs/core/0_beacon-chain.md#constants
-    uint64 withdrawable_epoch = 6 [(photon.ext.cast_type) = "Epoch"];
+    uint64 withdrawable_epoch = 7 [(photon.ext.cast_type) = "Epoch"];
 }
 
 // ValidatorParticipation stores participation metrics during a given epoch.
