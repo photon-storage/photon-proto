@@ -370,6 +370,7 @@ func TestCopyAttestations(t *testing.T) {
 func TestCopyValidator(t *testing.T) {
 	v := &Validator{
 		PublicKey:                  bytes(),
+		Balance:                    123456789,
 		Slashed:                    true,
 		ActivationEligibilityEpoch: 14322,
 		ActivationEpoch:            14325,
