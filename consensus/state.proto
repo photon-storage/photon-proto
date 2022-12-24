@@ -45,17 +45,16 @@ message State {
     bytes auditor_trie_root = 403 [(photon.ext.ssz_size) = "32"];
     // Storage contract trie root hash.
     bytes storage_trie_root = 404 [(photon.ext.ssz_size) = "32"];
+    // Randao mixes trie root hash.
+    bytes randao_mixes_trie_root = 405 [(photon.ext.ssz_size) = "32"];
     // Storage contract audit queue's root hash.
-    bytes audit_queue_root = 405 [(photon.ext.ssz_size) = "32"];
+    bytes audit_queue_root = 406 [(photon.ext.ssz_size) = "32"];
     // Storage contract event queue's root hash.
-    bytes event_queue_root = 406 [(photon.ext.ssz_size) = "32"];
+    bytes event_queue_root = 407 [(photon.ext.ssz_size) = "32"];
 
     // Aggregated state [501-600]
     uint64 reservior_balance = 501;
     Storage storage = 502;
-
-    // Randomness [601-700]
-    repeated bytes randao_mixes = 601 [(photon.ext.ssz_max) = "65536,32"];
 }
 
 // Metadata for all active storage contracts.
