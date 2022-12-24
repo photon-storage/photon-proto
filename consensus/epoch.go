@@ -160,6 +160,11 @@ func (e Epoch) ToBytesBigEndian() []byte {
 	return uint64ToBytesBigEndian(uint64(e))
 }
 
+// UniqueKey convert the Epoch to the unique hash.
+func (e Epoch) UniqueKey() [32]byte {
+	return toBytes32(uint64ToBytesBigEndian(uint64(e)))
+}
+
 // BytesToEpochBigEndian conversion.
 func BytesToEpochBigEndian(b []byte) Epoch {
 	return Epoch(bytesToUint64BigEndian(b))
