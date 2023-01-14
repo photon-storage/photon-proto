@@ -158,24 +158,24 @@ func (mr *MockNodeClientMockRecorder) GetAuditor(arg0, arg1 interface{}, arg2 ..
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAuditor", reflect.TypeOf((*MockNodeClient)(nil).GetAuditor), varargs...)
 }
 
-// GetBlock mocks base method.
-func (m *MockNodeClient) GetBlock(arg0 context.Context, arg1 *pbc.BlockRequest, arg2 ...grpc.CallOption) (*pbc.Block, error) {
+// GetBlockProposal mocks base method.
+func (m *MockNodeClient) GetBlockProposal(arg0 context.Context, arg1 *pbc.BlockProposalRequest, arg2 ...grpc.CallOption) (*pbc.Block, error) {
 	m.ctrl.T.Helper()
 	varargs := []interface{}{arg0, arg1}
 	for _, a := range arg2 {
 		varargs = append(varargs, a)
 	}
-	ret := m.ctrl.Call(m, "GetBlock", varargs...)
+	ret := m.ctrl.Call(m, "GetBlockProposal", varargs...)
 	ret0, _ := ret[0].(*pbc.Block)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
-// GetBlock indicates an expected call of GetBlock.
-func (mr *MockNodeClientMockRecorder) GetBlock(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
+// GetBlockProposal indicates an expected call of GetBlockProposal.
+func (mr *MockNodeClientMockRecorder) GetBlockProposal(arg0, arg1 interface{}, arg2 ...interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	varargs := append([]interface{}{arg0, arg1}, arg2...)
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlock", reflect.TypeOf((*MockNodeClient)(nil).GetBlock), varargs...)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetBlockProposal", reflect.TypeOf((*MockNodeClient)(nil).GetBlockProposal), varargs...)
 }
 
 // GetChainConfig mocks base method.

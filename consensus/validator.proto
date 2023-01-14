@@ -144,7 +144,7 @@ message DutiesResponse {
     }
 }
 
-message BlockRequest {
+message BlockProposalRequest {
     // Slot for which the block should be proposed.
     uint64 slot = 1 [(photon.ext.cast_type) = "Slot"];
 
@@ -153,7 +153,6 @@ message BlockRequest {
 
     // Validator's 32 byte graffiti message for the new block.
     bytes graffiti = 3 [(photon.ext.ssz_size) = "32"];
-
 }
 
 message ProposeResponse {
