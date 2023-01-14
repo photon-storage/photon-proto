@@ -428,7 +428,7 @@ service Node {
     // The server returns a new block, without proposer signature, that can be
     // proposed on the chain. The block should be filled with all the necessary
     // data for proposer to sign.
-    rpc GetBlock(BlockRequest) returns (Block) {
+    rpc GetBlockProposal(BlockProposalRequest) returns (Block) {
         option (google.api.http) = {
             get: "/eth/v1alpha2/validator/block"
         };

@@ -4330,7 +4330,7 @@ var file_consensus_node_proto_rawDesc = []byte{
 	0x19, 0x0a, 0x15, 0x52, 0x45, 0x4d, 0x4f, 0x56, 0x45, 0x5f, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x41,
 	0x54, 0x4f, 0x52, 0x5f, 0x4b, 0x45, 0x59, 0x53, 0x10, 0x01, 0x12, 0x16, 0x0a, 0x12, 0x53, 0x45,
 	0x54, 0x5f, 0x56, 0x41, 0x4c, 0x49, 0x44, 0x41, 0x54, 0x4f, 0x52, 0x5f, 0x4b, 0x45, 0x59, 0x53,
-	0x10, 0x02, 0x32, 0x87, 0x31, 0x0a, 0x04, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x85, 0x01, 0x0a, 0x10,
+	0x10, 0x02, 0x32, 0x97, 0x31, 0x0a, 0x04, 0x4e, 0x6f, 0x64, 0x65, 0x12, 0x85, 0x01, 0x0a, 0x10,
 	0x4c, 0x69, 0x73, 0x74, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73,
 	0x12, 0x29, 0x2e, 0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e,
 	0x73, 0x75, 0x73, 0x2e, 0x4c, 0x69, 0x73, 0x74, 0x41, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74,
@@ -4644,9 +4644,10 @@ var file_consensus_node_proto_rawDesc = []byte{
 	0x64, 0x69, 0x74, 0x6f, 0x72, 0x53, 0x74, 0x61, 0x74, 0x75, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f,
 	0x6e, 0x73, 0x65, 0x22, 0x1c, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x16, 0x12, 0x14, 0x2f, 0x6e, 0x6f,
 	0x64, 0x65, 0x2f, 0x61, 0x75, 0x64, 0x69, 0x74, 0x6f, 0x72, 0x2f, 0x73, 0x74, 0x61, 0x74, 0x75,
-	0x73, 0x12, 0x6a, 0x0a, 0x08, 0x47, 0x65, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x12, 0x1e, 0x2e,
-	0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73,
-	0x2e, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e,
+	0x73, 0x12, 0x7a, 0x0a, 0x10, 0x47, 0x65, 0x74, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x50, 0x72, 0x6f,
+	0x70, 0x6f, 0x73, 0x61, 0x6c, 0x12, 0x26, 0x2e, 0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e, 0x63,
+	0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73, 0x2e, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x50, 0x72,
+	0x6f, 0x70, 0x6f, 0x73, 0x61, 0x6c, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x1a, 0x17, 0x2e,
 	0x70, 0x68, 0x6f, 0x74, 0x6f, 0x6e, 0x2e, 0x63, 0x6f, 0x6e, 0x73, 0x65, 0x6e, 0x73, 0x75, 0x73,
 	0x2e, 0x42, 0x6c, 0x6f, 0x63, 0x6b, 0x22, 0x25, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x1f, 0x12, 0x1d,
 	0x2f, 0x65, 0x74, 0x68, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x32, 0x2f, 0x76, 0x61,
@@ -4818,7 +4819,7 @@ var file_consensus_node_proto_goTypes = []interface{}{
 	(*ValidatorStatusRequest)(nil),                // 65: photon.consensus.ValidatorStatusRequest
 	(*MultipleValidatorStatusRequest)(nil),        // 66: photon.consensus.MultipleValidatorStatusRequest
 	(*AuditorStatusRequest)(nil),                  // 67: photon.consensus.AuditorStatusRequest
-	(*BlockRequest)(nil),                          // 68: photon.consensus.BlockRequest
+	(*BlockProposalRequest)(nil),                  // 68: photon.consensus.BlockProposalRequest
 	(*AttestationDataRequest)(nil),                // 69: photon.consensus.AttestationDataRequest
 	(*AggregateSelectionRequest)(nil),             // 70: photon.consensus.AggregateSelectionRequest
 	(*SignedAggregateSubmitRequest)(nil),          // 71: photon.consensus.SignedAggregateSubmitRequest
@@ -4908,7 +4909,7 @@ var file_consensus_node_proto_depIdxs = []int32{
 	66, // 57: photon.consensus.Node.MultipleValidatorStatus:input_type -> photon.consensus.MultipleValidatorStatusRequest
 	26, // 58: photon.consensus.Node.GetAuditor:input_type -> photon.consensus.GetAuditorRequest
 	67, // 59: photon.consensus.Node.AuditorStatus:input_type -> photon.consensus.AuditorStatusRequest
-	68, // 60: photon.consensus.Node.GetBlock:input_type -> photon.consensus.BlockRequest
+	68, // 60: photon.consensus.Node.GetBlockProposal:input_type -> photon.consensus.BlockProposalRequest
 	49, // 61: photon.consensus.Node.ProposeBlock:input_type -> photon.consensus.SignedBlock
 	69, // 62: photon.consensus.Node.GetAttestationData:input_type -> photon.consensus.AttestationDataRequest
 	47, // 63: photon.consensus.Node.ProposeAttestation:input_type -> photon.consensus.Attestation
@@ -4955,7 +4956,7 @@ var file_consensus_node_proto_depIdxs = []int32{
 	85, // 104: photon.consensus.Node.MultipleValidatorStatus:output_type -> photon.consensus.MultipleValidatorStatusResponse
 	86, // 105: photon.consensus.Node.GetAuditor:output_type -> photon.consensus.Auditor
 	87, // 106: photon.consensus.Node.AuditorStatus:output_type -> photon.consensus.AuditorStatusResponse
-	88, // 107: photon.consensus.Node.GetBlock:output_type -> photon.consensus.Block
+	88, // 107: photon.consensus.Node.GetBlockProposal:output_type -> photon.consensus.Block
 	89, // 108: photon.consensus.Node.ProposeBlock:output_type -> photon.consensus.ProposeResponse
 	90, // 109: photon.consensus.Node.GetAttestationData:output_type -> photon.consensus.AttestationData
 	91, // 110: photon.consensus.Node.ProposeAttestation:output_type -> photon.consensus.AttestResponse
@@ -5796,7 +5797,7 @@ type NodeClient interface {
 	// The server returns a new block, without proposer signature, that can be
 	// proposed on the chain. The block should be filled with all the necessary
 	// data for proposer to sign.
-	GetBlock(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*Block, error)
+	GetBlockProposal(ctx context.Context, in *BlockProposalRequest, opts ...grpc.CallOption) (*Block, error)
 	// Sends the newly signed block to node.
 	//
 	// The validator sends the newly signed block to the node so the block can
@@ -6367,9 +6368,9 @@ func (c *nodeClient) AuditorStatus(ctx context.Context, in *AuditorStatusRequest
 	return out, nil
 }
 
-func (c *nodeClient) GetBlock(ctx context.Context, in *BlockRequest, opts ...grpc.CallOption) (*Block, error) {
+func (c *nodeClient) GetBlockProposal(ctx context.Context, in *BlockProposalRequest, opts ...grpc.CallOption) (*Block, error) {
 	out := new(Block)
-	err := c.cc.Invoke(ctx, "/photon.consensus.Node/GetBlock", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/photon.consensus.Node/GetBlockProposal", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -6650,7 +6651,7 @@ type NodeServer interface {
 	// The server returns a new block, without proposer signature, that can be
 	// proposed on the chain. The block should be filled with all the necessary
 	// data for proposer to sign.
-	GetBlock(context.Context, *BlockRequest) (*Block, error)
+	GetBlockProposal(context.Context, *BlockProposalRequest) (*Block, error)
 	// Sends the newly signed block to node.
 	//
 	// The validator sends the newly signed block to the node so the block can
@@ -6805,8 +6806,8 @@ func (*UnimplementedNodeServer) GetAuditor(context.Context, *GetAuditorRequest) 
 func (*UnimplementedNodeServer) AuditorStatus(context.Context, *AuditorStatusRequest) (*AuditorStatusResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method AuditorStatus not implemented")
 }
-func (*UnimplementedNodeServer) GetBlock(context.Context, *BlockRequest) (*Block, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetBlock not implemented")
+func (*UnimplementedNodeServer) GetBlockProposal(context.Context, *BlockProposalRequest) (*Block, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetBlockProposal not implemented")
 }
 func (*UnimplementedNodeServer) ProposeBlock(context.Context, *SignedBlock) (*ProposeResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ProposeBlock not implemented")
@@ -7550,20 +7551,20 @@ func _Node_AuditorStatus_Handler(srv interface{}, ctx context.Context, dec func(
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Node_GetBlock_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(BlockRequest)
+func _Node_GetBlockProposal_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(BlockProposalRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(NodeServer).GetBlock(ctx, in)
+		return srv.(NodeServer).GetBlockProposal(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/photon.consensus.Node/GetBlock",
+		FullMethod: "/photon.consensus.Node/GetBlockProposal",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(NodeServer).GetBlock(ctx, req.(*BlockRequest))
+		return srv.(NodeServer).GetBlockProposal(ctx, req.(*BlockProposalRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -7837,8 +7838,8 @@ var _Node_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Node_AuditorStatus_Handler,
 		},
 		{
-			MethodName: "GetBlock",
-			Handler:    _Node_GetBlock_Handler,
+			MethodName: "GetBlockProposal",
+			Handler:    _Node_GetBlockProposal_Handler,
 		},
 		{
 			MethodName: "ProposeBlock",
