@@ -51,6 +51,8 @@ message State {
     bytes audit_queue_root = 406 [(photon.ext.ssz_size) = "32"];
     // Storage contract event queue's root hash.
     bytes event_queue_root = 407 [(photon.ext.ssz_size) = "32"];
+    // Slot trie root hash.
+    bytes slot_trie_root = 408 [(photon.ext.ssz_size) = "32"];
 
     // Aggregated state [501-600]
     uint64 reservior_balance = 501;
